@@ -1,0 +1,350 @@
+/* Reset */
+body,
+h1,
+h2,
+p,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    line-height: 1.6;
+}
+
+/* Header always full width */
+.header {
+    width: 100%;
+    background: #2c3e50;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.sub-title {
+    margin-top: 10px;
+}
+
+/* Main body as two columns */
+table,
+tbody,
+tr {
+    width: 100%;
+}
+
+tr {
+    display: flex;
+}
+
+/* Navigation: 1 part */
+.navigation {
+    flex: 1;
+    background: #ecf0f1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Subjects list */
+.subjects {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 15px;
+}
+
+.subject-item {
+    font-weight: bold;
+    margin: 10px 0 5px;
+    padding: 6px 10px;
+    background: #bdc3c7;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Hover effect for subjects */
+.subject-item:hover {
+    background: #95a5a6;
+    color: #fff;
+}
+
+/* Pages list under each subject */
+.pages {
+    list-style-type: none;
+    padding-left: 20px;
+    margin: 5px 0 10px;
+}
+
+.page-item {
+    margin: 6px 0;
+    padding: 4px 8px;
+    border-left: 3px solid #3498db;
+    background: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Hover effect for pages */
+.page-item:hover {
+    background: #eaf2f8;
+}
+
+/* Page: 3 parts */
+.page {
+    flex: 3;
+    background: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    border-left: 1px solid #ddd;
+}
+
+/* Highlight active subject */
+.subject-item.active {
+    background: #34495e;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.subject-item.active a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Highlight active page */
+.page-item.active {
+    background: #d6eaf8;
+    border-left: 3px solid #2980b9;
+    border-radius: 3px;
+}
+
+.page-item.active a {
+    color: #2980b9;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Footer full width */
+.footer {
+    width: 100%;
+    background: #2c3e50;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Form styling */
+.form-subject {
+    margin: 20px auto;
+    padding: 20px;
+    background: #fdfdfd;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.form-title {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #2c3e50;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Text and select inputs */
+.input-text,
+.input-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* Radio buttons */
+.radio-option {
+    margin-right: 15px;
+    font-weight: normal;
+    color: #555;
+}
+
+.radio-option input {
+    margin-right: 5px;
+}
+
+/* Actions */
+.form-actions {
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #3498db;
+    border: none;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-secondary {
+    background: #ecf0f1;
+    border: 1px solid #ccc;
+    color: #2c3e50;
+    margin-left: 10px;
+}
+
+.btn-secondary:hover {
+    background: #d0d7dc;
+}
+
+/* Flash / Success message */
+.flash-message {
+    background-color: #d4edda;
+    /* light green */
+    border: 1px solid #c3e6cb;
+    /* darker green border */
+    color: #155724;
+    /* dark green text */
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Error messages */
+.error-messages {
+    background-color: #f8d7da;
+    /* light red */
+    border: 1px solid #f5c6cb;
+    /* darker red border */
+    color: #721c24;
+    /* dark red text */
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.error-messages ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.error-messages li {
+    margin-bottom: 5px;
+}
+
+/* Form inputs */
+.input-text,
+.input-select {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Form labels */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Radio options */
+.radio-option {
+    margin-right: 15px;
+    font-weight: normal;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border: 1px solid #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+/* Table structure */
+#structure {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#navigation {
+    width: 20%;
+    vertical-align: top;
+    padding-right: 20px;
+}
+
+#page {
+    width: 75%;
+    vertical-align: top;
+}
+
+h2.form-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Optional: highlight active navigation items */
+.subject-item.active a,
+.page-item.active a {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.new-page-link-container {
+    margin-top: 1rem;
+}

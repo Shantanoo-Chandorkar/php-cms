@@ -1,0 +1,132 @@
+/* ========== GENERAL ========== */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f7f9fb;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h2,
+h2.title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #222;
+    text-align: center;
+}
+
+/* ========== FORM CONTAINER ========== */
+form {
+    max-width: 400px;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+form p {
+    margin: 1rem 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #444;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+button {
+    display: inline-block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* ========== MESSAGES & ERRORS ========== */
+.errors,
+.message {
+    max-width: 400px;
+    margin: 1rem auto;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.errors {
+    background: #ffe6e6;
+    border: 1px solid #cc0000;
+    color: #cc0000;
+}
+
+.errors ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.message {
+    background: #e6f7e6;
+    border: 1px solid #339933;
+    color: #267326;
+}
+
+/* ========== LINKS ========== */
+a {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a.btn-danger {
+    display: inline-block;
+    padding: 0.6rem 1rem;
+    margin-top: 0.8rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    background: #dc3545;
+    /* Bootstrap-style red */
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+a.btn-danger:hover {
+    background: #a71d2a;
+}
