@@ -11,7 +11,6 @@ return array(
     'Widget_Corps_Oops_Frontend\\' => array($baseDir . '/frontend'),
     'Widget_Corps_Oops_Auth\\' => array($baseDir . '/auth'),
     'Widget_Corps_Oops_Admin\\' => array($baseDir . '/admin'),
-    'Widget_Corps_Oops\\' => array('/'),
     'SzepeViktor\\PHPStan\\WordPress\\' => array($vendorDir . '/szepeviktor/phpstan-wordpress/src'),
     'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => array($vendorDir . '/dealerdirect/phpcodesniffer-composer-installer/src'),
 );

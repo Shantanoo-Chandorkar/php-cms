@@ -18,7 +18,6 @@ class ComposerStaticInit19bb948ed5c5846a9f96efa378d647a7
             'Widget_Corps_Oops_Frontend\\' => 27,
             'Widget_Corps_Oops_Auth\\' => 23,
             'Widget_Corps_Oops_Admin\\' => 24,
-            'Widget_Corps_Oops\\' => 18,
         ),
         'S' => 
         array (
@@ -50,10 +49,6 @@ class ComposerStaticInit19bb948ed5c5846a9f96efa378d647a7
         'Widget_Corps_Oops_Admin\\' => 
         array (
             0 => __DIR__ . '/../..' . '/admin',
-        ),
-        'Widget_Corps_Oops\\' => 
-        array (
-            0 => '/',
         ),
         'SzepeViktor\\PHPStan\\WordPress\\' => 
         array (
