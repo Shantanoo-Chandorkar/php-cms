@@ -8,7 +8,8 @@
             "Widget_Corps_Oops_Auth\\": "auth/",
             "Widget_Corps_Oops_Helper\\": "helper/",
             "Widget_Corps_Oops_Includes\\": "includes/",
-            "Widget_Corps_Oops_Frontend\\": "frontend/"
+            "Widget_Corps_Oops_Frontend\\": "frontend/",
+            "Widget_Corps_Oops_Tests\\": "tests/"
         }
     },
     "authors": [

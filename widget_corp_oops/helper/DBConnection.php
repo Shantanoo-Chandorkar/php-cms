@@ -329,7 +329,7 @@ class DBConnection {
 
         return array(
 			'success' => false,
-			'message' => 'Invalid username or password',
+			'message' => 'Invalid username or password.',
 		);
     }
 

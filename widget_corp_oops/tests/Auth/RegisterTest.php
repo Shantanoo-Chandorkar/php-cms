@@ -1,7 +1,9 @@
 <?php
+namespace Widget_Corps_Oops_Tests\Auth;
 
 use PHPUnit\Framework\TestCase;
 use Widget_Corps_Oops_Helper\Bootstrap;
+
 
 class RegisterTest extends TestCase
 {
@@ -12,9 +14,8 @@ class RegisterTest extends TestCase
         $bootstrap = new Bootstrap('widget_corp_test'); // test DB
         $this->db = $bootstrap->getDB();
 
-        // Remove the test user if it exists to ensure a clean test environment
-        $this->db->conn->prepare('DELETE FROM users WHERE username = :username')
-                  ->execute([':username' => 'testuser123']);
+        // Start a transaction for test isolation
+        $this->db->conn->beginTransaction();
     }
 
     /**
@@ -46,5 +47,11 @@ class RegisterTest extends TestCase
 
         $this->assertFalse($result['success']);
         $this->assertEquals('Username or password cannot be empty.', $result['message']);
+    }
+
+    protected function tearDown(): void
+    {
+        // Undo changes made during the test
+        $this->db->conn->rollBack();
     }
 }
