@@ -3,26 +3,26 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Widget_Corps_Oops_Helper\Bootstrap;
 
-$bootstrap = new Bootstrap("widget_corp_test");
-$db = $bootstrap->getDB();
-$session = $bootstrap->getSession();
+$bootstrap = new Bootstrap( 'widget_corp_test' );
+$db        = $bootstrap->getDB();
+$session   = $bootstrap->getSession();
 
-$message = "";
+$message = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? "");
-    $password = trim($_POST['password'] ?? "");
+if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+    $username = trim( $_POST['username'] ?? '' );
+    $password = trim( $_POST['password'] ?? '' );
 
-    if ($username && $password) {
-        $result = $db->login_user($username, $password);
+    if ( $username && $password ) {
+        $result  = $db->login_user( $username, $password );
         $message = $result['message'];
-        if ($result['success']) {
-            $session->set('username', $username);
-            header("Location: ../admin/content.php");
+        if ( $result['success'] ) {
+            $session->set( 'username', $username );
+            header( 'Location: ../admin/content.php' );
             exit;
         }
     } else {
-        $message = "Please fill in all fields.";
+        $message = 'Please fill in all fields.';
     }
 }
 ?>
@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <h2>Login</h2>
-    <?php if ($message): ?>
-        <p><?php echo htmlspecialchars($message); ?></p>
+    <?php if ( $message ) : ?>
+        <p><?php echo htmlspecialchars( $message ); ?></p>
     <?php endif; ?>
     <form method="post" action="">
         <label>Username:

@@ -2,24 +2,25 @@
 
 <?php
 // show validation errors if any.
-if (!empty($_SESSION['errors'] ?? [])) : ?>
+if ( ! empty( $_SESSION['errors'] ?? array() ) ) : ?>
     <div class="errors">
         <ul>
-            <?php foreach ($_SESSION['errors'] as $error): ?>
-                <li><?php echo htmlspecialchars($error) ?></li>
+            <?php foreach ( $_SESSION['errors'] as $error ) : ?>
+                <li><?php echo htmlspecialchars( $error ); ?></li>
             <?php endforeach; ?>
         </ul>
     </div>
-    <?php unset($_SESSION['errors']); ?>
+    <?php unset( $_SESSION['errors'] ); ?>
 <?php endif; ?>
 
 <?php
 // show messages if any
-if (!empty($_SESSION['message'] ?? '')) : ?>
+if ( ! empty( $_SESSION['message'] ?? '' ) ) :
+	?>
     <div class="message">
-        <?php echo htmlspecialchars($_SESSION['message']) ?>
+        <?php echo htmlspecialchars( $_SESSION['message'] ); ?>
     </div>
-    <?php unset($_SESSION['message']); ?>
+    <?php unset( $_SESSION['message'] ); ?>
 <?php endif; ?>
 
 <form action="new_user.php" method="post">

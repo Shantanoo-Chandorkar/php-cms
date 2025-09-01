@@ -9,7 +9,7 @@ use Widget_Corps_Oops_Admin\Services\NavigationServices;
 use Widget_Corps_Oops_Admin\Services\ValidationServices;
 
 // instantiate Bootstrap with database
-$bootstrap = new Bootstrap("widget_corp_test");
+$bootstrap = new Bootstrap( 'widget_corp_test' );
 
 
 $controller = new EditSubjectController(

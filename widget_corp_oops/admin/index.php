@@ -4,11 +4,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Widget_Corps_Oops_Helper\Bootstrap;
 use Widget_Corps_Oops_Admin\Services\HeaderServices;
 
-$bootstrap = new Bootstrap("widget_corp_test");
+$bootstrap     = new Bootstrap( 'widget_corp_test' );
 $headerService = new HeaderServices();
 
 // Output header
-echo $headerService->getHeader("admin_index");
+echo $headerService->getHeader( 'admin_index' );
 ?>
 
 <div id="admin-dashboard">

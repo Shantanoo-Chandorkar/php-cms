@@ -5,8 +5,8 @@ use Widget_Corps_Oops_Helper\Bootstrap;
 use Widget_Corps_Oops_Admin\Services\HeaderServices;
 use Widget_Corps_Oops_Admin\Services\NavigationServices;
 
-class ContentController
-{
+class ContentController {
+
     private Bootstrap $_bootstrap;
     private HeaderServices $_headerService;
     private NavigationServices $_navigationService;
@@ -16,22 +16,21 @@ class ContentController
         HeaderServices $headerService,
         NavigationServices $navigationService
     ) {
-        $this->_bootstrap = $bootstrap;
-        $this->_headerService = $headerService;
+        $this->_bootstrap         = $bootstrap;
+        $this->_headerService     = $headerService;
         $this->_navigationService = $navigationService;
     }
 
-    public function index(): void
-    {
-        $subjects = $this->_bootstrap->getSubjects();
+    public function index(): void {
+        $subjects        = $this->_bootstrap->getSubjects();
         $selectedSubject = $this->_bootstrap->getSelectedSubject();
-        $selectedPage = $this->_bootstrap->getSelectedPage();
-        $subjParam = $_GET['subj'] ?? null;
-        $pageParam = $_GET['page'] ?? null;
-        $db = $this->_bootstrap->getDB();
+        $selectedPage    = $this->_bootstrap->getSelectedPage();
+        $subjParam       = $_GET['subj'] ?? null;
+        $pageParam       = $_GET['page'] ?? null;
+        $db              = $this->_bootstrap->getDB();
 
         // Render header
-        echo $this->_headerService->getHeader("content");
+        echo $this->_headerService->getHeader( 'content' );
         ?>
         <table id="structure" class="structure">
             <tr>
@@ -49,25 +48,25 @@ class ContentController
                 </td>
                 <td id="page" class="page">
                     <h2 class="title">
-                        <?php 
-                        if ($selectedSubject) {
-                            echo htmlspecialchars($selectedSubject['menu_name']);
-                        } elseif ($selectedPage) {
+                        <?php
+                        if ( $selectedSubject ) {
+                            echo htmlspecialchars( $selectedSubject['menu_name'] );
+                        } elseif ( $selectedPage ) {
                             $fullContent = $selectedPage['content'];
-                            $limit = 100;
+                            $limit       = 100;
 
-                            if (strlen($fullContent) > $limit) {
-                                $excerpt = substr($fullContent, 0, $limit) . "...";
+                            if ( strlen( $fullContent ) > $limit ) {
+                                $excerpt = substr( $fullContent, 0, $limit ) . '...';
                             } else {
                                 $excerpt = $fullContent;
                             }
 
-                            echo "<div>" . htmlspecialchars($selectedPage['menu_name']) . "</div>";
-                            echo "<br/>";
-                            echo "<p class='page-excerpt'>" . htmlspecialchars($excerpt) . "</p>";
+                            echo '<div>' . htmlspecialchars( $selectedPage['menu_name'] ) . '</div>';
+                            echo '<br/>';
+                            echo "<p class='page-excerpt'>" . htmlspecialchars( $excerpt ) . '</p>';
                             echo "<a href='edit_page.php?page={$selectedPage['id']}'>Edit Page</a>";
                         } else {
-                            echo "Select a subject or page to edit";
+                            echo 'Select a subject or page to edit';
                         }
                         ?>
                     </h2>
@@ -75,6 +74,6 @@ class ContentController
             </tr>
         </table>
         <?php
-        include_once __DIR__ . "/../../includes/footer.php";
+        include_once __DIR__ . '/../../includes/footer.php';
     }
 }

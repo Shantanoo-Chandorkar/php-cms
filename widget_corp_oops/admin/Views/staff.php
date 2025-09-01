@@ -1,10 +1,10 @@
-<?php 
-echo $header->render("staff");
+<?php
+echo $header->render( 'staff' );
 ?>
 <table id="structure" class="structure">
     <tr>
         <td id="navigation" class="navigation">
-            <?php echo $navigation->renderUsersNavigation($users, $userParam); ?>
+            <?php echo $navigation->renderUsersNavigation( $users, $userParam ); ?>
         </td>
         <td id="page" class="page">
             <h2 class="title">Staff Menu</h2>
@@ -17,4 +17,4 @@ echo $header->render("staff");
         </td>
     </tr>
 </table>
-<?php require __DIR__ . "/partials/footer.php"; ?>
+<?php require __DIR__ . '/partials/footer.php'; ?>
