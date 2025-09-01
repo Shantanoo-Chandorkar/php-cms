@@ -130,3 +130,7 @@ a.btn-danger {
 a.btn-danger:hover {
     background: #a71d2a;
 }
+
+p {
+    text-align: center;
+}

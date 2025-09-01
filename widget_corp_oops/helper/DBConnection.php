@@ -18,7 +18,7 @@ class DBConnection {
 
 
     private $database = '';
-    private $conn     = null;
+    public $conn     = null;
 
     public function __construct( $dbname ) {
         $this->database = $dbname;
@@ -273,6 +273,14 @@ class DBConnection {
     }
 
     public function register_user( $username, $password ) {
+
+        if ( empty( $username ) || empty ( $password ) ) {
+            return array(
+                'success' => false,
+                'message' => 'Username or password cannot be empty.'
+            );
+        }
+
         // check if username exists
         $query = $this->conn->prepare( 'SELECT id FROM users WHERE username = :username' );
         $query->execute( array( ':username' => $username ) );
