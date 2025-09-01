@@ -1,0 +1,8 @@
+# modules
+vendor/
+node_modules/
+
+# lock files
+package-lock.json
+composer.lock
+yarn
