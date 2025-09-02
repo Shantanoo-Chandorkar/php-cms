@@ -1,12 +1,25 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../helper/bootstrap.php';
 
-use Widget_Corps_Oops_Helper\Bootstrap;
-use Widget_Corps_Oops_Admin\Controllers\DeletePageController;
 
-$bootstrap = new Bootstrap('widget_corp_test');
+use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Admin\Services\HeaderServices;
+use Widget_Corp_Oops_Admin\Services\NavigationServices;
+use Widget_Corp_Oops_Admin\Services\ValidationServices;
+use Widget_Corp_Oops_Admin\Controllers\PageController;
 
-$controller = new DeletePageController($bootstrap);
-$controller->index();
+$bootstrap         = new Bootstrap('widget_corp_test');
+$headerService     = new HeaderServices();
+$navigationService = new NavigationServices();
+$validationService = new ValidationServices();
+
+$controller = new PageController(
+    $bootstrap,
+    $headerService,
+    $navigationService,
+    $validationService
+);
+
+$pageId = intval($_GET['page'] ?? 0);
+$controller->delete($pageId);

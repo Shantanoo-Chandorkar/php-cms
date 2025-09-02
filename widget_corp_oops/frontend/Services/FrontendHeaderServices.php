@@ -1,6 +1,6 @@
 <?php
 
-namespace Widget_Corps_Oops_Frontend\Services;
+namespace Widget_Corp_Oops_Frontend\Services;
 
 class FrontendHeaderServices
 {

@@ -2,7 +2,7 @@
     <tr>
         <td id="navigation" class="navigation">
             <?php
-            echo $this->_navigationService->renderNavigation(
+            echo $this->navigationServices->renderNavigation(
                 $subjects,
                 $subjParam,
                 $pageParam,
@@ -22,16 +22,16 @@
                                 <?php
                                 switch ($errorField) {
                                     case 'menu_name':
-                                        echo 'Subject name is required and must be at most 30 characters.';
+                                        echo htmlspecialchars('Subject name is required and must be at most 30 characters.');
                                         break;
                                     case 'position':
-                                        echo 'Position is required.';
+                                        echo htmlspecialchars('Position field is required.');
                                         break;
                                     case 'visible':
-                                        echo 'Visible is required.';
+                                        echo htmlspecialchars('Visible field is required.');
                                         break;
                                     default:
-                                        echo "Unknown error with $errorField.";
+                                        echo htmlspecialchars("Unknown error with {$errorField}.");
                                 }
                                 ?>
                             </li>

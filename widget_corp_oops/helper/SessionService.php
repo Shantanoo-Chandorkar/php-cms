@@ -1,6 +1,6 @@
 <?php
 
-namespace Widget_Corps_Oops_Helper;
+namespace Widget_Corp_Oops_Helper;
 
 class SessionService
 {

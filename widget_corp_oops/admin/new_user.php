@@ -3,17 +3,17 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../helper/bootstrap.php';
 
-use Widget_Corps_Oops_Helper\Bootstrap;
-use Widget_Corps_Oops_Admin\Controllers\NewUserController;
-use Widget_Corps_Oops_Admin\Services\HeaderServices;
-use Widget_Corps_Oops_Admin\Services\NavigationServices;
+use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Admin\Controllers\UserController;
+use Widget_Corp_Oops_Admin\Services\HeaderServices;
+use Widget_Corp_Oops_Admin\Services\NavigationServices;
 
 $bootstrap = new Bootstrap('widget_corp_test');
 
-$controller = new NewUserController(
+$controller = new UserController(
     $bootstrap,
     new HeaderServices(),
     new NavigationServices()
 );
 
-$controller->index();
+$controller->create();

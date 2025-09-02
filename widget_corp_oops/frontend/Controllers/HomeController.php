@@ -1,9 +1,9 @@
 <?php
 
-namespace Widget_Corps_Oops_Frontend\Controllers;
+namespace Widget_Corp_Oops_Frontend\Controllers;
 
-use Widget_Corps_Oops_Helper\Bootstrap;
-use Widget_Corps_Oops_Frontend\Services\NavigationService;
+use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Frontend\Services\NavigationService;
 
 class HomeController
 {

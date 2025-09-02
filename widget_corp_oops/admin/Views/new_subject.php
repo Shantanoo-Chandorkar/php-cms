@@ -2,7 +2,7 @@
     <tr>
         <td id="navigation" class="navigation">
             <?php
-            echo $this->navigation_services->renderNavigation(
+            echo $this->navigationServices->renderNavigation(
                 $subjects,
                 $selected_subject['id'] ?? null,
                 $selected_page['id'] ?? null,
@@ -15,8 +15,24 @@
             <?php if (!empty($_SESSION['errors'])) : ?>
                 <div class="error-messages">
                     <ul>
-                        <?php foreach ($_SESSION['errors'] as $error) : ?>
-                            <li><?php echo htmlspecialchars($error); ?></li>
+                        <?php foreach ($_SESSION['errors'] as $errorField) : ?>
+                            <li>
+                                <?php
+                                switch ($errorField) {
+                                    case 'menu_name':
+                                        echo htmlspecialchars('Subject name is required and must be at most 30 characters.');
+                                        break;
+                                    case 'position':
+                                        echo htmlspecialchars('Position field is required.');
+                                        break;
+                                    case 'visible':
+                                        echo htmlspecialchars('Visible field is required.');
+                                        break;
+                                    default:
+                                        echo htmlspecialchars("Unknown error with {$errorField}.");
+                                }
+                                ?>
+                            </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>

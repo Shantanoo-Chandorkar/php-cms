@@ -1,6 +1,6 @@
 <?php
 
-namespace Widget_Corps_Oops_Admin\Services;
+namespace Widget_Corp_Oops_Admin\Services;
 
 class ValidationServices
 {

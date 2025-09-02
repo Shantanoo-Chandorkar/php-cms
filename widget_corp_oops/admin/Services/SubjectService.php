@@ -1,8 +1,8 @@
 <?php
 
-namespace Widget_Corps_Oops_Admin\Services;
+namespace Widget_Corp_Oops_Admin\Services;
 
-use Widget_Corps_Oops_Helper\DBConnection;
+use Widget_Corp_Oops_Helper\DBConnection;
 
 class SubjectService
 {

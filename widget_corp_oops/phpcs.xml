@@ -12,11 +12,12 @@
 
     <!-- Use PSR-12 as the base standard -->
     <rule ref="PSR12">
-        <!-- Example tweak: allow space indentation if you prefer -->
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"/>
+        <exclude name="Generic.Files.LineLength.TooLong"/>
         
         <!-- Exclude ALL Squiz.Commenting.* sniffs -->
         <exclude name="Squiz.Commenting"/>
+        
     </rule>
 
     <!-- Global safety: ignore ALL Squiz.Commenting.* -->

@@ -1,10 +1,10 @@
 <?php
-echo $header->render('staff');
+echo $this->headerServices->getHeader('staff');
 ?>
 <table id="structure" class="structure">
     <tr>
         <td id="navigation" class="navigation">
-            <?php echo $navigation->renderUsersNavigation($users, $userParam); ?>
+            <?php echo $this->navigationServices->renderUsersNavigation($users, $userParam); ?>
         </td>
         <td id="page" class="page">
             <h2 class="title">Staff Menu</h2>
@@ -12,7 +12,7 @@ echo $header->render('staff');
             <ul class="menu">
                 <li><a href="content.php">Manage Website Content</a></li>
                 <li><a href="new_user.php">Add Staff User</a></li>
-                <li><a href="auth/logout.php">Logout</a></li>
+                <li><a href="../auth/logout.php">Logout</a></li>
             </ul>
         </td>
     </tr>

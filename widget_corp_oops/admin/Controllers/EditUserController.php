@@ -1,31 +1,35 @@
 <?php
 
-namespace Widget_Corps_Oops_Admin\Controllers;
+namespace Widget_Corp_Oops_Admin\Controllers;
 
-use Widget_Corps_Oops_Helper\Bootstrap;
-use Widget_Corps_Oops_Admin\Services\HeaderServices;
-use Widget_Corps_Oops_Admin\Services\NavigationServices;
-use Widget_Corps_Oops_Admin\Services\ValidationServices;
+use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Admin\Services\HeaderServices;
+use Widget_Corp_Oops_Admin\Services\NavigationServices;
+use Widget_Corp_Oops_Admin\Services\ValidationServices;
 
 class EditUserController
 {
-    private Bootstrap $_bootstrap;
-    private HeaderServices $_header;
-    private NavigationServices $_navigation;
-    private ValidationServices $_validation;
+    private Bootstrap $bootstrap;
+    private HeaderServices $headerServices;
+    private NavigationServices $navigationServices;
+    private ValidationServices $validationServices;
 
-    public function __construct(Bootstrap $bootstrap, HeaderServices $header, NavigationServices $navigation, ValidationServices $validation = new ValidationServices())
-    {
-        $this->_bootstrap  = $bootstrap;
-        $this->_header     = $header;
-        $this->_navigation = $navigation;
-        $this->_validation = $validation;
+    public function __construct(
+        Bootstrap $bootstrap,
+        HeaderServices $headerServices,
+        NavigationServices $navigationServices,
+        ValidationServices $validationServices = new ValidationServices()
+    ) {
+        $this->bootstrap  = $bootstrap;
+        $this->headerServices     = $headerServices;
+        $this->navigationServices = $navigationServices;
+        $this->validationServices = $validationServices;
     }
 
     public function index(): void
     {
-        $db      = $this->_bootstrap->getDB();
-        $session = $this->_bootstrap->getSession();
+        $db      = $this->bootstrap->getDB();
+        $session = $this->bootstrap->getSession();
 
         $userId = intval($_GET['user'] ?? 0);
         if ($userId === 0) {
@@ -44,7 +48,7 @@ class EditUserController
         }
 
         // GET request → show form
-        echo $this->_header->getHeader('forms');
+        echo $this->headerServices->getHeader('forms');
         $user = $selectedUser;
         include __DIR__ . '/../Views/edit_user.php';
         include __DIR__ . '../../../includes/footer.php';
@@ -54,19 +58,19 @@ class EditUserController
 
     private function handlePost(int $userId, array $selectedUser): void
     {
-        $session = $this->_bootstrap->getSession();
-        $db      = $this->_bootstrap->getDB();
+        $session = $this->bootstrap->getSession();
+        $db      = $this->bootstrap->getDB();
 
         $errors          = array();
         $required_fields = array( 'username', 'password', 'role' );
-        $errors          = $this->_validation->validateRequiredFields($required_fields);
+        $errors          = $this->validationServices->validateRequiredFields($required_fields);
 
         $field_lengths = array(
             'username' => 50,
             'password' => 255,
             'role'     => 20,
         );
-        $errors        = array_merge($errors, $this->_validation->validateMaxLengths($field_lengths));
+        $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
 
         if (! empty($errors)) {
             $session->set('errors', $errors);

@@ -4,12 +4,12 @@
     "version": "1.0.0",
     "autoload": {
         "psr-4": {
-            "Widget_Corps_Oops_Admin\\": "admin/",
-            "Widget_Corps_Oops_Auth\\": "auth/",
-            "Widget_Corps_Oops_Helper\\": "helper/",
-            "Widget_Corps_Oops_Includes\\": "includes/",
-            "Widget_Corps_Oops_Frontend\\": "frontend/",
-            "Widget_Corps_Oops_Tests\\": "tests/"
+            "Widget_Corp_Oops_Admin\\": "admin/",
+            "Widget_Corp_Oops_Auth\\": "auth/",
+            "Widget_Corp_Oops_Helper\\": "helper/",
+            "Widget_Corp_Oops_Includes\\": "includes/",
+            "Widget_Corp_Oops_Frontend\\": "frontend/",
+            "Widget_Corp_Oops_Tests\\": "tests/"
         }
     },
     "authors": [

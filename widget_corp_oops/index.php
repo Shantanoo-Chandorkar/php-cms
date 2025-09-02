@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Widget_Corps_Oops_Helper\Bootstrap;
-use Widget_Corps_Oops_Frontend\Controllers\HomeController;
+use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Frontend\Controllers\HomeController;
 
 $bootstrap = new Bootstrap('widget_corp_test');
 

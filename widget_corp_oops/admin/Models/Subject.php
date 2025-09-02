@@ -1,10 +1,10 @@
 <?php
 
-namespace Widget_Corps_Oops_Admin\Models;
+namespace Widget_Corp_Oops_Admin\Models;
 
 use PDO;
 use PDOException;
-use Widget_Corps_Oops_Helper\DBConnection;
+use Widget_Corp_Oops_Helper\DBConnection;
 
 class Subject
 {
@@ -28,7 +28,6 @@ class Subject
     }
 
     // Getters.
-
     public function getId(): int
     {
         return $this->id;
@@ -65,6 +64,7 @@ class Subject
         $this->visible = $visible;
     }
 
+    // Database operations
     public function getSubjects(): array
     {
         try {

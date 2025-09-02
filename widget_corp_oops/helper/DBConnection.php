@@ -1,16 +1,10 @@
 <?php
 
-namespace Widget_Corps_Oops_Helper;
+namespace Widget_Corp_Oops_Helper;
 
-use Widget_Corps_Oops_Admin\Models\User;
+use Widget_Corp_Oops_Admin\Models\User;
 use PDO;
 use PDOException;
-
-// Prevent direct access
-if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
-    http_response_code(403);
-    exit('Access denied.');
-}
 
 require_once 'constants.php';
 
@@ -39,11 +33,6 @@ class DBConnection
                 die('Database connection failed: ' . $e->getMessage());
             }
         }
-        return $this->conn;
-    }
-
-    public function get_connection()
-    {
         return $this->conn;
     }
 
@@ -91,24 +80,6 @@ class DBConnection
         }
     }
 
-    public function get_subject_by_menu_name($menu_name)
-    {
-        try {
-            // :menu_name is a bound parameter so PDO ensures it's treated as a value,
-            // and not an executable SQL.
-            $query = $this->conn->prepare(
-                'SELECT * FROM subjects WHERE menu_name = :menu_name LIMIT 1'
-            );
-            $query->bindParam(':menu_name', $menu_name, PDO::PARAM_STR);
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-
-            return $result ?: null;
-        } catch (PDOException $e) {
-            die('Error fetching subject requested: ' . $e->getMessage());
-        }
-    }
-
     public function get_page_by_id($id)
     {
         try {
@@ -124,141 +95,6 @@ class DBConnection
             return $result ?: null;
         } catch (PDOException $e) {
             die('Error fetching page requested: ' . $e->getMessage());
-        }
-    }
-
-    public function create_new_subject($menu_name, $position, $visible)
-    {
-        try {
-            $existing_subject = $this->get_subject_by_menu_name($menu_name);
-
-            if ($existing_subject !== null) {
-                return false;
-            }
-
-            $query = $this->conn->prepare(
-                'INSERT INTO subjects (menu_name, position, visible)
-                VALUES (:menu_name, :position, :visible)'
-            );
-
-            $query->bindParam(':menu_name', $menu_name, PDO::PARAM_STR);
-            $query->bindParam(':position', $position, PDO::PARAM_INT);
-            $query->bindParam(':visible', $visible, PDO::PARAM_INT);
-
-            $query->execute();
-
-            // Return the new subject ID
-            return $this->conn->lastInsertId();
-        } catch (PDOException $e) {
-            die('Error creating new subject: ' . $e->getMessage());
-        }
-    }
-
-    public function create_new_page($subject_id, $menu_name, $position, $visible, $content)
-    {
-        try {
-            $query = $this->conn->prepare(
-                'INSERT INTO pages (subject_id, menu_name, position, visible, content) 
-                VALUES (:subject_id, :menu_name, :position, :visible, :content)'
-            );
-
-            $query->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
-            $query->bindParam(':menu_name', $menu_name, PDO::PARAM_STR);
-            $query->bindParam(':position', $position, PDO::PARAM_INT);
-            $query->bindParam(':visible', $visible, PDO::PARAM_INT);
-            $query->bindParam(':content', $content, PDO::PARAM_STR);
-
-            $query->execute();
-
-            return $this->conn->lastInsertId(); // return new page id
-        } catch (PDOException $e) {
-            die('Error creating page: ' . $e->getMessage());
-        }
-    }
-
-
-    public function update_subject($id, $menu_name, $position, $visible)
-    {
-        try {
-            $query = $this->conn->prepare(
-                'UPDATE subjects 
-                SET menu_name = :menu_name, position = :position, visible = :visible 
-                WHERE id = :id'
-            );
-
-            $query->bindParam(':id', $id, PDO::PARAM_INT);
-            $query->bindParam(':menu_name', $menu_name, PDO::PARAM_STR);
-            $query->bindParam(':position', $position, PDO::PARAM_INT);
-            $query->bindParam(':visible', $visible, PDO::PARAM_INT);
-
-            $query->execute();
-
-            // Return number of affected rows.
-            return $query->rowCount();
-        } catch (PDOException $e) {
-            die('Error creating new subject: ' . $e->getMessage());
-        }
-    }
-
-    public function update_page($id, $menu_name, $position, $visible, $content)
-    {
-        try {
-            $query = $this->conn->prepare(
-                'UPDATE pages 
-                SET menu_name = :menu_name, position = :position, visible = :visible , content = :content
-                WHERE id = :id'
-            );
-
-            $query->bindParam(':id', $id, PDO::PARAM_INT);
-            $query->bindParam(':menu_name', $menu_name, PDO::PARAM_STR);
-            $query->bindParam(':position', $position, PDO::PARAM_INT);
-            $query->bindParam(':visible', $visible, PDO::PARAM_INT);
-            $query->bindParam(':content', $content, PDO::PARAM_STR);
-
-            $query->execute();
-
-            // Return number of affected rows.
-            return $query->rowCount();
-        } catch (PDOException $e) {
-            die('Error creating new pages: ' . $e->getMessage());
-        }
-    }
-
-    public function delete_subject_by_id($subject_id)
-    {
-        try {
-            if ($this->get_subject_by_id($subject_id) !== null) {
-                $query = $this->conn->prepare(
-                    'DELETE FROM subjects WHERE id = :id LIMIT 1'
-                );
-
-                $query->bindParam(':id', $subject_id, PDO::PARAM_INT);
-
-                $query->execute();
-                return $query->rowCount();
-            }
-            return 0;
-        } catch (PDOException $e) {
-            die('Error while deleting the subject: ' . $e->getMessage());
-        }
-    }
-
-    public function delete_page_by_id($page_id)
-    {
-        try {
-            if ($this->get_page_by_id($page_id) !== null) {
-                $query = $this->conn->prepare(
-                    'DELETE FROM pages WHERE id = :id LIMIT 1'
-                );
-
-                $query->bindParam(':id', $page_id, PDO::PARAM_INT);
-
-                $query->execute();
-                return $query->rowCount();
-            }
-            return 0;
-        } catch (PDOException $e) {
-            die('Error while deleting the subject: ' . $e->getMessage());
         }
     }
 

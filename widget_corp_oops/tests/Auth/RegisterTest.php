@@ -1,9 +1,9 @@
 <?php
 
-namespace Widget_Corps_Oops_Tests\Auth;
+namespace Widget_Corp_Oops_Tests\Auth;
 
 use PHPUnit\Framework\TestCase;
-use Widget_Corps_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Helper\Bootstrap;
 
 class RegisterTest extends TestCase
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Widget_Corps_Oops_Admin\Services;
+namespace Widget_Corp_Oops_Admin\Services;
 
-use Widget_Corps_Oops_Helper\DBConnection;
+use Widget_Corp_Oops_Helper\DBConnection;
 
 class NavigationServices
 {
@@ -119,15 +119,5 @@ class NavigationServices
 
         <?php
         return ob_get_clean();
-    }
-
-    public function getSiteURL(): string
-    {
-        $protocol    = (! empty($_SERVER['HTTPS']) && 'off' !== $_SERVER['HTTPS']) ? 'https' : 'http';
-        $host        = $_SERVER['HTTP_HOST'];
-        $script_path = dirname($_SERVER['SCRIPT_NAME']);
-        $script_path = rtrim($script_path, '/\\');
-
-        return $protocol . '://' . $host . $script_path . '/';
     }
 }

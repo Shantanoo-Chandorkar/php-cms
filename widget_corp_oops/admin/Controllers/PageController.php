@@ -1,39 +1,73 @@
 <?php
 
-namespace Widget_Corps_Oops_Admin\Controllers;
+namespace Widget_Corp_Oops_Admin\Controllers;
 
-use Widget_Corps_Oops_Helper\DBConnection;
-use Widget_Corps_Oops_Admin\Services\ValidationServices;
+use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Admin\Services\ValidationServices;
+use Widget_Corp_Oops_Admin\Services\HeaderServices;
+use Widget_Corp_Oops_Admin\Services\NavigationServices;
+use Widget_Corp_Oops_Admin\Services\RedirectService;
+use Widget_Corp_Oops_Admin\Models\Page;
 
 class PageController
 {
-    private DBConnection $_db;
-    private ValidationServices $_validation;
+    private Bootstrap $bootstrap;
+    private HeaderServices $headerServices;
+    private NavigationServices $navigationServices;
+    private RedirectService $redirectService;
+    private Page $pageModel;
+    private ValidationServices $validationServices;
 
     public function __construct(
-        DBConnection $db,
+        Bootstrap $bootstrap,
+        HeaderServices $headerServices,
+        NavigationServices $navigationServices,
         ValidationServices $validation = new ValidationServices()
     ) {
-        $this->_db         = $db;
-        $this->_validation = $validation;
+        $this->bootstrap           = $bootstrap;
+        $this->headerServices     = $headerServices;
+        $this->navigationServices = $navigationServices;
+        $this->validationServices = $validation;
+        $this->pageModel         = new Page();
+        $this->redirectService     = new RedirectService();
     }
 
     public function create(int $subjectId): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (0 === $subjectId) {
+            $this->redirectService->redirect('content.php');
+        }
+
+        if ('POST' === $_SERVER['REQUEST_METHOD']) {
+            $this->handleFormSubmission($subjectId);
             return;
         }
 
-        $errors          = array();
-        $required_fields = array( 'menu_name', 'position', 'visible' );
-        $errors          = $this->_validation->validateRequiredFields($required_fields);
+        // Data for View.
+        $subjects = $this->bootstrap->getSubjects();
+        $selected_subject = $this->bootstrap->getSelectedSubject();
+        $selected_page = $this->bootstrap->getSelectedPage();
 
-        $field_lengths = array( 'menu_name' => 30 );
-        $errors        = array_merge($errors, $this->_validation->validateMaxLengths($field_lengths));
+        // We need to remove this line after refactoring.
+        $db = $this->bootstrap->getDB();
+        echo $this->headerServices->getHeader('edit_subject');
 
-        if (! empty($errors)) {
+        include __DIR__ . '/../Views/new_page.php';
+        include_once __DIR__ . '/../../includes/footer.php';
+    }
+
+    public function handleFormSubmission(int $subjectId): void
+    {
+        $errors          = [];
+        $required_fields = ['menu_name', 'position', 'visible'];
+        $errors          = $this->validationServices->validateRequiredFields($required_fields);
+
+        $field_lengths = ['menu_name' => 30];
+        $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
+
+        if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            $this->redirect('new_page.php?subj=' . urlencode($subjectId));
+            $this->redirectService->redirect('new_page.php?subj=' . urlencode($subjectId));
         }
 
         $menuName = $_POST['menu_name'];
@@ -41,53 +75,80 @@ class PageController
         $visible  = $_POST['visible'];
         $content  = $_POST['content'];
 
-        $newPageId = $this->_db->create_new_page($subjectId, $menuName, $position, $visible, $content);
+        $newPageId = $this->pageModel->createNewPage($subjectId, $menuName, $position, $visible, $content);
 
         if ($newPageId) {
             $_SESSION['message'] = 'The page was successfully created!';
-            $this->redirect('edit_page.php?page=' . urlencode($newPageId));
+            $this->redirectService->redirect('edit_page.php?page=' . urlencode($newPageId));
         } else {
             $_SESSION['message'] = 'Page could not be created.';
-            $this->redirect('new_page.php?subj=' . urlencode($subjectId));
+            $this->redirectService->redirect('new_page.php?subj=' . urlencode($subjectId));
         }
     }
 
     public function update(int $pageId): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if ($pageId === 0) {
+            $this->redirectService->redirect('content.php');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errors          = [];
+            $required_fields = ['menu_name', 'position', 'visible'];
+            $errors          = $this->validationServices->validateRequiredFields($required_fields);
+
+            $field_lengths   = ['menu_name' => 30];
+            $errors          = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
+
+            if (!empty($errors)) {
+                $_SESSION['errors'] = $errors;
+                $this->redirectService->redirect('edit_page.php?page=' . urlencode($pageId));
+            }
+
+            $menuName = $_POST['menu_name'];
+            $position = (int) $_POST['position'];
+            $visible  = (bool) $_POST['visible'];
+            $content  = $_POST['content'];
+
+            $result = $this->pageModel->updatePageById($pageId, $menuName, $position, $visible, $content);
+
+            if ($result) {
+                $_SESSION['message'] = 'The page was successfully updated!';
+            } else {
+                $_SESSION['message'] = 'No changes were made.';
+            }
+
+            $this->redirectService->redirect('edit_page.php?page=' . urlencode($pageId));
             return;
         }
 
-        $errors          = array();
-        $required_fields = array( 'menu_name', 'position', 'visible' );
-        $errors          = $this->_validation->validateRequiredFields($required_fields);
+        // GET request – load the form with existing data
+        $subjects          = $this->bootstrap->getSubjects();
+        $selected_subject  = $this->bootstrap->getSelectedSubject();
+        $selected_page     = $this->bootstrap->getSelectedPage();
+        $db                = $this->bootstrap->getDB();
 
-        $field_lengths = array( 'menu_name' => 30 );
-        $errors        = array_merge($errors, $this->_validation->validateMaxLengths($field_lengths));
+        echo $this->headerServices->getHeader('edit_subject');
 
-        if (! empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $this->redirect('edit_page.php?page=' . urlencode($pageId));
-        }
-
-        $menuName = $_POST['menu_name'];
-        $position = $_POST['position'];
-        $visible  = $_POST['visible'];
-        $content  = $_POST['content'];
-
-        $result = $this->_db->update_page($pageId, $menuName, $position, $visible, $content);
-
-        if ($result > 0) {
-            $_SESSION['message'] = 'The page was successfully updated!';
-        } else {
-            $_SESSION['message'] = 'No changes were made.';
-        }
-        $this->redirect('edit_page.php?page=' . urlencode($pageId));
+        include __DIR__ . '/../Views/edit_page.php';
+        include_once __DIR__ . '/../../includes/footer.php';
     }
 
-    public function redirect(string $url): void
+    public function delete(): void
     {
-        header("Location: $url");
-        exit;
+        $pageId = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+
+        if ($pageId === 0) {
+            $this->redirectService->redirect('content.php');
+        }
+
+        $result = $this->pageModel->deletePageById($pageId);
+
+        if ($result > 0) {
+            $this->redirectService->redirect('content.php');
+        } else {
+            echo '<p>Failed to delete page.</p>';
+            echo "<a href='content.php'>Return to the Main Page</a>";
+        }
     }
 }
