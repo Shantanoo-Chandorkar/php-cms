@@ -40,8 +40,8 @@ class UserController
         }
 
         echo $this->headerServices->getHeader('forms');
-        require __DIR__ . '/../Views/new_user.php';
-        require __DIR__ . '../../../includes/footer.php';
+        include __DIR__ . '/../Views/new_user.php';
+        include __DIR__ . '/../Views/partials/footer.php';
     }
 
     private function handleCreateUser(): void
@@ -107,7 +107,7 @@ class UserController
         echo $this->headerServices->getHeader('forms');
         $user = $selectedUser;
         include __DIR__ . '/../Views/edit_user.php';
-        include __DIR__ . '../../../includes/footer.php';
+        include __DIR__ . '/../Views/partials/footer.php';
     }
 
     private function handleUpdateUser(int $userId, array $selectedUser): void

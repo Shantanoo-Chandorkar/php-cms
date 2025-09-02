@@ -36,6 +36,6 @@ class ContentController
 
         // Render content view
         include __DIR__ . '/../Views/content.php';
-        include_once __DIR__ . '/../../includes/footer.php';
+        include_once __DIR__ . '/../Views/partials/footer.php';
     }
 }

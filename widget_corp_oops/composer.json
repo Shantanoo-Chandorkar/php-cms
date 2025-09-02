@@ -7,7 +7,6 @@
             "Widget_Corp_Oops_Admin\\": "admin/",
             "Widget_Corp_Oops_Auth\\": "auth/",
             "Widget_Corp_Oops_Helper\\": "helper/",
-            "Widget_Corp_Oops_Includes\\": "includes/",
             "Widget_Corp_Oops_Frontend\\": "frontend/",
             "Widget_Corp_Oops_Tests\\": "tests/"
         }

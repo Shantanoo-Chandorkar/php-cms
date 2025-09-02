@@ -50,7 +50,7 @@ class SubjectController
 
         // View for the new subject forms.
         include __DIR__ . '/../Views/new_subject.php';
-        include_once __DIR__ . '/../../includes/footer.php';
+        include __DIR__ . '/../Views/partials/footer.php';
     }
 
 
@@ -131,7 +131,7 @@ class SubjectController
         echo $this->headerService->getHeader('edit_subject');
 
         include_once __DIR__ . '/../Views/edit_subject.php';
-        include_once __DIR__ . '/../../includes/footer.php';
+        include __DIR__ . '/../Views/partials/footer.php';
     }
 
     public function delete(): void

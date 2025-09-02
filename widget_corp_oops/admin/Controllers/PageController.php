@@ -53,7 +53,7 @@ class PageController
         echo $this->headerServices->getHeader('edit_subject');
 
         include __DIR__ . '/../Views/new_page.php';
-        include_once __DIR__ . '/../../includes/footer.php';
+        include_once __DIR__ . '/../Views/partials/footer.php';
     }
 
     public function handleFormSubmission(int $subjectId): void
@@ -131,7 +131,7 @@ class PageController
         echo $this->headerServices->getHeader('edit_subject');
 
         include __DIR__ . '/../Views/edit_page.php';
-        include_once __DIR__ . '/../../includes/footer.php';
+        include_once __DIR__ . '/../Views/partials/footer.php';
     }
 
     public function delete(): void

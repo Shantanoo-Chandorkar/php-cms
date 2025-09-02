@@ -51,7 +51,7 @@ class EditUserController
         echo $this->headerServices->getHeader('forms');
         $user = $selectedUser;
         include __DIR__ . '/../Views/edit_user.php';
-        include __DIR__ . '../../../includes/footer.php';
+        include __DIR__ . '/../Views/partials/footer.php';
 
         $db->close();
     }
