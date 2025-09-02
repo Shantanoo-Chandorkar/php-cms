@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../helper/bootstrap.php';
 
@@ -9,7 +10,7 @@ use Widget_Corps_Oops_Admin\Services\NavigationServices;
 use Widget_Corps_Oops_Admin\Services\ValidationServices;
 
 // instantiate Bootstrap with database
-$bootstrap = new Bootstrap( 'widget_corp_test' );
+$bootstrap = new Bootstrap('widget_corp_test');
 
 
 $controller = new EditSubjectController(

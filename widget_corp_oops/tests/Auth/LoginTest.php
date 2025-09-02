@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Widget_Corps_Oops_Tests\Auth;
 
@@ -9,10 +9,10 @@ class LoginTest extends TestCase
 {
     private $db;
 
-    protected function setUp(): void 
+    protected function setUp(): void
     {
         $bootstrap = new Bootstrap('widget_corp_test'); // test DB
-        $this->db = $bootstrap->getDB();
+        $this->db  = $bootstrap->getDB();
 
         // Start a transaction for test isolation
         $this->db->conn->beginTransaction();
@@ -23,7 +23,8 @@ class LoginTest extends TestCase
      * Ensures that a valid username and password are authenticated correctly
      * and that the success message is returned.
      */
-    public function testLoginUserSuccess() {
+    public function testLoginUserSuccess()
+    {
         // First, register a user to ensure they exist
         $this->db->register_user('testuser', 'Password1!');
 
@@ -40,7 +41,8 @@ class LoginTest extends TestCase
      * Ensures that the method correctly rejects invalid passwords
      * and returns the appropriate error message.
      */
-    public function testLoginUserIncorrectPassword() {
+    public function testLoginUserIncorrectPassword()
+    {
         // First, register a user to ensure they exist
         $this->db->register_user('testuser', 'Password1!');
         $result = $this->db->login_user('testuser', 'WrongPassword');
@@ -48,7 +50,7 @@ class LoginTest extends TestCase
         $this->assertEquals('Invalid username or password.', $result['message']);
     }
 
-    protected function tearDown(): void 
+    protected function tearDown(): void
     {
         // Undo changes made during the test
         $this->db->conn->rollBack();

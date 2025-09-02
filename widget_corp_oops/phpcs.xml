@@ -1,24 +1,28 @@
 <?xml version="1.0"?>
-<ruleset name="My WordPress Project Standards">
-    <description>PHPCS configuration for WordPress coding standards</description>
+<ruleset name="My Project Standards">
+    <description>PHPCS configuration for PHP project in XAMPP (PSR-12 with tweaks)</description>
 
     <!-- Paths to scan -->
     <file>/</file>
 
+    <!-- Exclude common directories -->
     <exclude-pattern>var/*</exclude-pattern>
     <exclude-pattern>vendor/*</exclude-pattern>
     <exclude-pattern>images/*</exclude-pattern>
 
-    <!-- Use the WordPress standard -->
-    <rule ref="WordPress">
-        <!-- Disable the "Spaces instead of Tabs" error -->
+    <!-- Use PSR-12 as the base standard -->
+    <rule ref="PSR12">
+        <!-- Example tweak: allow space indentation if you prefer -->
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"/>
-        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
-        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+        
+        <!-- Exclude ALL Squiz.Commenting.* sniffs -->
+        <exclude name="Squiz.Commenting"/>
     </rule>
+
+    <!-- Global safety: ignore ALL Squiz.Commenting.* -->
+    <exclude name="Squiz.Commenting"/>
 
     <!-- Optional: Set tab width and encoding -->
     <arg name="tab-width" value="4"/>
     <arg name="encoding" value="utf-8"/>
-
 </ruleset>

@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Widget_Corps_Oops_Helper\Bootstrap;
@@ -6,13 +7,13 @@ use Widget_Corps_Oops_Admin\Services\HeaderServices;
 use Widget_Corps_Oops_Admin\Services\NavigationServices;
 use Widget_Corps_Oops_Admin\Controllers\ContentController;
 
-if ( session_status() === PHP_SESSION_NONE ) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$bootstrap         = new Bootstrap( 'widget_corp_test' );
+$bootstrap         = new Bootstrap('widget_corp_test');
 $headerService     = new HeaderServices();
 $navigationService = new NavigationServices();
 
-$controller = new ContentController( $bootstrap, $headerService, $navigationService );
+$controller = new ContentController($bootstrap, $headerService, $navigationService);
 $controller->index();

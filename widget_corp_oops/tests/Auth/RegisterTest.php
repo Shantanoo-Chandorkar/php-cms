@@ -1,9 +1,9 @@
 <?php
+
 namespace Widget_Corps_Oops_Tests\Auth;
 
 use PHPUnit\Framework\TestCase;
 use Widget_Corps_Oops_Helper\Bootstrap;
-
 
 class RegisterTest extends TestCase
 {
@@ -12,7 +12,7 @@ class RegisterTest extends TestCase
     protected function setUp(): void
     {
         $bootstrap = new Bootstrap('widget_corp_test'); // test DB
-        $this->db = $bootstrap->getDB();
+        $this->db  = $bootstrap->getDB();
 
         // Start a transaction for test isolation
         $this->db->conn->beginTransaction();

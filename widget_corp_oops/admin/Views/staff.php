@@ -1,10 +1,10 @@
 <?php
-echo $header->render( 'staff' );
+echo $header->render('staff');
 ?>
 <table id="structure" class="structure">
     <tr>
         <td id="navigation" class="navigation">
-            <?php echo $navigation->renderUsersNavigation( $users, $userParam ); ?>
+            <?php echo $navigation->renderUsersNavigation($users, $userParam); ?>
         </td>
         <td id="page" class="page">
             <h2 class="title">Staff Menu</h2>

@@ -14,11 +14,11 @@
             <?php echo $navigationHtml; ?>
         </div>
         <div id="page">
-            <?php if ( $selected['page'] ) : ?>
-                <h2><?php echo htmlspecialchars( $selected['page']['menu_name'] ); ?></h2>
+            <?php if ($selected['page']) : ?>
+                <h2><?php echo htmlspecialchars($selected['page']['menu_name']); ?></h2>
                 <p><?php echo $selected['page']['content']; ?></p>
-            <?php elseif ( $selected['subject'] ) : ?>
-                <h2><?php echo htmlspecialchars( $selected['subject']['menu_name'] ); ?></h2>
+            <?php elseif ($selected['subject']) : ?>
+                <h2><?php echo htmlspecialchars($selected['subject']['menu_name']); ?></h2>
                 <p>No page selected.</p>
             <?php else : ?>
                 <h2>Welcome to Widget Corp!</h2>
