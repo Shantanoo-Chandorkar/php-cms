@@ -2,20 +2,25 @@
 
 namespace Widget_Corp_Oops_Tests\Auth;
 
-use PHPUnit\Framework\TestCase;
-use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Tests\Database\DatabaseTestCase;
+use Widget_Corp_Oops_Helper\DBConnection;
+use Widget_Corp_Oops_Admin\Controllers\AuthController;
+use Widget_Corp_Oops_Admin\Models\User;
 
-class RegisterTest extends TestCase
+class RegisterTest extends DatabaseTestCase
 {
-    private $db;
+    private AuthController $controller;
 
     protected function setUp(): void
     {
-        $bootstrap = new Bootstrap('widget_corp_test'); // test DB
-        $this->db  = $bootstrap->getDB();
+        parent::setUp();
 
-        // Start a transaction for test isolation
-        $this->db->conn->beginTransaction();
+        // Inject the shared test connection into User, then into AuthController
+        $dbConnection = new DBConnection('widget_corp_test', $this->conn);
+        $userModel    = new User($dbConnection);
+
+        // AuthController now gets a prepared User instance
+        $this->controller = new AuthController($userModel);
     }
 
     /**
@@ -28,7 +33,7 @@ class RegisterTest extends TestCase
         $username = 'testuser123';
         $password = 'Password1!';
 
-        $result = $this->db->register_user($username, $password);
+        $result = $this->controller->handleRegisterUser($username, $password);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('success', $result);
@@ -43,15 +48,9 @@ class RegisterTest extends TestCase
      */
     public function testRegisterUserEmptyUsername()
     {
-        $result = $this->db->register_user('', 'Password1!');
+        $result = $this->controller->handleRegisterUser('', 'Password1!');
 
         $this->assertFalse($result['success']);
         $this->assertEquals('Username or password cannot be empty.', $result['message']);
-    }
-
-    protected function tearDown(): void
-    {
-        // Undo changes made during the test
-        $this->db->conn->rollBack();
     }
 }

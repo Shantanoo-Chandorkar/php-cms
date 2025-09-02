@@ -2,33 +2,35 @@
 
 namespace Widget_Corp_Oops_Tests\Auth;
 
-use PHPUnit\Framework\TestCase;
-use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Tests\Database\DatabaseTestCase;
+use Widget_Corp_Oops_Helper\DBConnection;
+use Widget_Corp_Oops_Admin\Controllers\AuthController;
+use Widget_Corp_Oops_Admin\Models\User;
 
-class LoginTest extends TestCase
+class LoginTest extends DatabaseTestCase
 {
-    private $db;
+    private AuthController $controller;
 
     protected function setUp(): void
     {
-        $bootstrap = new Bootstrap('widget_corp_test'); // test DB
-        $this->db  = $bootstrap->getDB();
+        parent::setUp();
 
-        // Start a transaction for test isolation
-        $this->db->conn->beginTransaction();
+        // Inject the shared test connection into User, then into AuthController
+        $dbConnection = new DBConnection('widget_corp_test', $this->conn);
+        $userModel    = new User($dbConnection);
+
+        // AuthController now gets a prepared User instance
+        $this->controller = new AuthController($userModel);
     }
 
     /**
      * Test successful user login
-     * Ensures that a valid username and password are authenticated correctly
-     * and that the success message is returned.
      */
-    public function testLoginUserSuccess()
+    public function testLoginUserSuccess(): void
     {
-        // First, register a user to ensure they exist
-        $this->db->register_user('testuser', 'Password1!');
+        $this->controller->handleRegisterUser('testuser', 'Password1!');
 
-        $result = $this->db->login_user('testuser', 'Password1!');
+        $result = $this->controller->handleLoginUser('testuser', 'Password1!');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('success', $result);
@@ -38,21 +40,14 @@ class LoginTest extends TestCase
 
     /**
      * Test login with incorrect password
-     * Ensures that the method correctly rejects invalid passwords
-     * and returns the appropriate error message.
      */
-    public function testLoginUserIncorrectPassword()
+    public function testLoginUserIncorrectPassword(): void
     {
-        // First, register a user to ensure they exist
-        $this->db->register_user('testuser', 'Password1!');
-        $result = $this->db->login_user('testuser', 'WrongPassword');
+        $this->controller->handleRegisterUser('testuser', 'Password1!');
+
+        $result = $this->controller->handleLoginUser('testuser', 'WrongPassword');
+
         $this->assertFalse($result['success']);
         $this->assertEquals('Invalid username or password.', $result['message']);
-    }
-
-    protected function tearDown(): void
-    {
-        // Undo changes made during the test
-        $this->db->conn->rollBack();
     }
 }

@@ -8,7 +8,6 @@ use Widget_Corp_Oops_Admin\Controllers\AuthController;
 $bootstrap = new Bootstrap('widget_corp_test');
 $session   = $bootstrap->getSession();
 
-
 // User Controller to access Login functionality.
 $controller = new AuthController();
 

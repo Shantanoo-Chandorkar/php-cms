@@ -4,7 +4,7 @@
          verbose="true">
     <testsuites>
         <testsuite name="WidgetCorp Test Suite">
-            <directory>tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

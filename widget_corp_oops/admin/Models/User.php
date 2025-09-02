@@ -15,6 +15,7 @@ class User
     private DBConnection $db;
 
     public function __construct(
+        ?DBConnection $db = null,
         ?int $id = null,
         ?string $username = null,
         ?string $password = null,
@@ -24,7 +25,7 @@ class User
         $this->username = $username;
         $this->password = $password;
         $this->role     = $role;
-        $this->db       = new DBConnection('widget_corp_test');
+        $this->db       = $db ?? new DBConnection('widget_corp_test');
     }
 
     // Getters.
@@ -106,7 +107,9 @@ class User
 
             if ($user && password_verify($password, $user['hashed_password'])) {
                 // Start session and store user ID
-                session_regenerate_id(true);
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
+                }
                 $_SESSION['user_id']  = $user['id'];
                 $_SESSION['username'] = $username;
                 return array(
@@ -134,6 +137,7 @@ class User
             $users = array();
             foreach ($rows as $row) {
                 $users[] = new User(
+                    null,
                     (int) $row['id'],
                     $row['username'],
                     null,

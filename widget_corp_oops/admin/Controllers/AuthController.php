@@ -6,11 +6,11 @@ use Widget_Corp_Oops_Admin\Models\User;
 
 class AuthController
 {
-    private $userModel;
+    private User $userModel;
 
-    public function __construct()
+    public function __construct(?User $userModel = null)
     {
-        $this->userModel = new User();
+        $this->userModel = $userModel ?? new User();
     }
 
     public function handleLoginUser(string $username, string $password): array
