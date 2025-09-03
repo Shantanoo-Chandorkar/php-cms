@@ -6,16 +6,20 @@
                 $subjects,
                 $selected_subject['id'] ?? null,
                 $selected_page['id'] ?? null,
-                $db ?? null
+                $pageModel
             );
+            ?>
+            <?php
+                $errorSession = $this->sessionService->get('errors');
+                $messageSession = $this->sessionService->get('message');
             ?>
         </td>
         <td id="page" class="page">
             <h2 class="form-title">Add Subject</h2>
-            <?php if (!empty($_SESSION['errors'])) : ?>
+            <?php if (!empty($errorSession)) : ?>
                 <div class="error-messages">
                     <ul>
-                        <?php foreach ($_SESSION['errors'] as $errorField) : ?>
+                        <?php foreach ($errorSession as $errorField) : ?>
                             <li>
                                 <?php
                                 switch ($errorField) {
@@ -36,7 +40,7 @@
                         <?php endforeach; ?>
                     </ul>
                 </div>
-                <?php unset($_SESSION['errors']); ?>
+                <?php $this->sessionService->unset('errors'); ?>
             <?php endif; ?>
             <form action="new_subject.php" method="post" class="form-subject">
                 <div class="form-group">

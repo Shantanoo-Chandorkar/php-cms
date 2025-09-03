@@ -1,19 +1,25 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../helper/bootstrap.php';
 
-use Widget_Corp_Oops_Helper\Bootstrap;
-use Widget_Corp_Oops_Admin\Controllers\PageController;
 use Widget_Corp_Oops_Admin\Services\HeaderServices;
 use Widget_Corp_Oops_Admin\Services\NavigationServices;
+use Widget_Corp_Oops_Admin\Controllers\PageController;
+use Widget_Corp_Oops_Admin\Services\SessionService;
+use Widget_Corp_Oops_Admin\Services\SubjectService;
 
-$bootstrap = new Bootstrap('widget_corp_test');
+// Initialize session.
+$sessionService = new SessionService();
+
+$headerService     = new HeaderServices();
+$navigationService = new NavigationServices();
+$subjectService = new SubjectService();
 
 $controller = new PageController(
-    $bootstrap,
-    new HeaderServices(),
-    new NavigationServices(),
+    $sessionService,
+    $subjectService,
+    $headerService,
+    $navigationService,
 );
 
 $subjectId = intval($_GET['subj'] ?? 0);

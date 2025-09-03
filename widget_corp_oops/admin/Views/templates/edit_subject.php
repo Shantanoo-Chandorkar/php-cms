@@ -6,18 +6,22 @@
                 $subjects,
                 $subjParam,
                 $pageParam,
-                $db
+                $pageModel
             );
+            ?>
+            <?php
+                $errorSession = $this->sessionService->get('errors');
+                $messageSession = $this->sessionService->get('message');
             ?>
         </td>
         <td id="page" class="page">
             <h2 class="form-title">
                 Edit Subject: <?php echo htmlspecialchars($selectedSubject['menu_name']); ?>
             </h2>
-            <?php if (! empty($_SESSION['errors'])) : ?>
+            <?php if (! empty($errorSession)) : ?>
                 <div class="error-messages">
                     <ul>
-                        <?php foreach ($_SESSION['errors'] as $errorField) : ?>
+                        <?php foreach ($errorSession as $errorField) : ?>
                             <li>
                                 <?php
                                 switch ($errorField) {
@@ -38,13 +42,13 @@
                         <?php endforeach; ?>
                     </ul>
                 </div>
-                <?php unset($_SESSION['errors']); ?>
+                <?php $this->sessionService->unset('errors'); ?>
             <?php endif; ?>
-            <?php if (! empty($_SESSION['message'])) : ?>
+            <?php if (! empty($messageSession)) : ?>
                 <div class="flash-message">
-                    <?php echo htmlspecialchars($_SESSION['message']); ?>
+                    <?php echo htmlspecialchars($messageSession); ?>
+                    <?php $this->sessionService->unset('message'); ?>
                 </div>
-                <?php unset($_SESSION['message']); ?>
             <?php endif; ?>
             <form action="edit_subject.php?subj=<?php echo urlencode($selectedSubject['id']); ?>"
                     method="post" class="form-subject">

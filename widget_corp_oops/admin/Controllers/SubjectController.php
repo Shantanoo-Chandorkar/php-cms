@@ -2,32 +2,37 @@
 
 namespace Widget_Corp_Oops_Admin\Controllers;
 
-use Widget_Corp_Oops_Helper\Bootstrap;
 use Widget_Corp_Oops_Admin\Services\HeaderServices;
 use Widget_Corp_Oops_Admin\Services\NavigationServices;
 use Widget_Corp_Oops_Admin\Services\ValidationServices;
-use Widget_Corp_Oops_Admin\Models\Subject;
 use Widget_Corp_Oops_Admin\Services\RedirectService;
+use Widget_Corp_Oops_Admin\Services\SessionService;
+use Widget_Corp_Oops_Admin\Services\SubjectService;
+use Widget_Corp_Oops_Admin\Models\Subject;
+use Widget_Corp_Oops_Admin\Models\Page;
 
 class SubjectController
 {
-    private Bootstrap $bootstrap;
     private HeaderServices $headerService;
     private NavigationServices $navigationServices;
     private ValidationServices $validationService;
     private Subject $subjectModel;
     private RedirectService $redirectService;
+    private SessionService $sessionService;
+    private SubjectService $subjectService;
 
     public function __construct(
-        Bootstrap $bootstrap,
+        SessionService $sessionService,
+        SubjectService $subjectService,
         HeaderServices $headerService,
         NavigationServices $navigationServices,
         ValidationServices $validationService = new ValidationServices(),
     ) {
-        $this->bootstrap           = $bootstrap;
         $this->headerService     = $headerService;
         $this->navigationServices = $navigationServices;
         $this->validationService          = $validationService;
+        $this->sessionService = $sessionService;
+        $this->subjectService = $subjectService;
         $this->subjectModel       = new Subject();
         $this->redirectService     = new RedirectService();
     }
@@ -39,18 +44,18 @@ class SubjectController
             return;
         }
 
-        $subjects         = $this->bootstrap->getSubjects();
-        $selected_subject = $this->bootstrap->getSelectedSubject();
-        $selected_page    = $this->bootstrap->getSelectedPage();
+        $subjects         = $this->subjectService->getSubjects();
+        $selected_subject = $this->subjectService->getSelectedSubject();
+        $selected_page    = $this->subjectService->getSelectedPage();
 
         // We need to remove this line after refactoring.
-        $db               = $this->bootstrap->getDB();
+        $pageModel = new Page();
 
         echo $this->headerService->getHeader('edit_subject');
 
         // View for the new subject forms.
-        include __DIR__ . '/../Views/new_subject.php';
-        include __DIR__ . '/../Views/partials/footer.php';
+        include_once __DIR__ . '/../Views/templates/new_subject.php';
+        include_once __DIR__ . '/../Views/partials/footer.php';
     }
 
 
@@ -84,9 +89,8 @@ class SubjectController
 
     public function update(): void
     {
-        $db              = $this->bootstrap->getDB();
-        $subjects        = $this->bootstrap->getSubjects();
-        $selectedSubject = $this->bootstrap->getSelectedSubject();
+        $subjects        = $this->subjectService->getSubjects();
+        $selectedSubject = $this->subjectService->getSelectedSubject();
         $subjParam       = $_GET['subj'] ?? null;
         $pageParam       = $_GET['page'] ?? null;
 
@@ -127,11 +131,13 @@ class SubjectController
             $this->redirectService->redirect('edit_subject.php?subj=' . urlencode($subjParam));
         }
 
+        $pageModel = new Page();
+
         // Render the template
         echo $this->headerService->getHeader('edit_subject');
 
-        include_once __DIR__ . '/../Views/edit_subject.php';
-        include __DIR__ . '/../Views/partials/footer.php';
+        include_once __DIR__ . '/../Views/templates/edit_subject.php';
+        include_once __DIR__ . '/../Views/partials/footer.php';
     }
 
     public function delete(): void

@@ -10,7 +10,7 @@ class UserTest extends DatabaseTestCase
 {
     private function makeUser(): User
     {
-        $db = new DBConnection('widget_corp_test', $this->conn);
+        $db = new DBConnection($this->conn);
         return new User($db);
     }
 

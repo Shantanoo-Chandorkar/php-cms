@@ -2,53 +2,52 @@
 
 namespace Widget_Corp_Oops_Frontend\Controllers;
 
-use Widget_Corp_Oops_Helper\Bootstrap;
 use Widget_Corp_Oops_Frontend\Services\NavigationService;
+use Widget_Corp_Oops_Admin\Models\Subject;
+use Widget_Corp_Oops_Admin\Models\Page;
 
 class HomeController
 {
-    private Bootstrap $_bootstrap;
-    private NavigationService $_navService;
+    private NavigationService $navigationService;
+    private ?Subject $subjectModel;
+    private ?Page $pageModel;
 
-    public function __construct(Bootstrap $bootstrap, NavigationService $navService = null)
-    {
-        $this->_bootstrap  = $bootstrap;
-        $this->_navService = $navService ?? new NavigationService();
+    public function __construct(
+        NavigationService $navService = new NavigationService(),
+    ) {
+        $this->navigationService = $navService;
+        $this->subjectModel = new Subject();
+        $this->pageModel = new Page();
     }
 
     public function index(?int $subjId, ?int $pageId): void
     {
-        $db = $this->_bootstrap->getDB();
+        $subjects = $this->subjectModel->getSubjects();
+        $selected = $this->resolveSelection($subjId, $pageId);
 
-        $subjects = $db->get_subjects();
-        $selected = $this->resolveSelection($subjId, $pageId, $db);
-
-        $navigationHtml = $this->_navService->renderFrontendNavigation(
+        $navigationHtml = $this->navigationService->renderFrontendNavigation(
             $subjects,
             $selected['subject']['id'] ?? null,
             $selected['page']['id'] ?? null,
-            $db
         );
 
-        include __DIR__ . '/../Views/index.php';
-
-        $db->close();
+        include_once __DIR__ . '/../Views/index.php';
     }
 
-    private function resolveSelection(?int $subjId, ?int $pageId, $db): array
+    private function resolveSelection(?int $subjId, ?int $pageId): array
     {
         $selectedSubject = null;
         $selectedPage    = null;
 
         if ($pageId) {
-            $selectedPage = $db->get_page_by_id($pageId);
+            $selectedPage = $this->pageModel->getPageById($pageId);
             if ($selectedPage) {
-                $selectedSubject = $db->get_subject_by_id($selectedPage['subject_id']);
+                $selectedSubject = $this->subjectModel->getSubjectById($selectedPage['subject_id']);
             }
         } elseif ($subjId) {
-            $selectedSubject = $db->get_subject_by_id($subjId);
+            $selectedSubject = $this->subjectModel->getSubjectById($subjId);
             if ($selectedSubject) {
-                $selectedPage = $db->get_first_position_page_by_subject_id_with($subjId);
+                $selectedPage = $this->pageModel->getFirstPositionPageBySubjectId($subjId);
             }
         }
 

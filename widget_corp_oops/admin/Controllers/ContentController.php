@@ -2,40 +2,46 @@
 
 namespace Widget_Corp_Oops_Admin\Controllers;
 
-use Widget_Corp_Oops_Helper\Bootstrap;
 use Widget_Corp_Oops_Admin\Services\HeaderServices;
 use Widget_Corp_Oops_Admin\Services\NavigationServices;
+use Widget_Corp_Oops_Admin\Services\SubjectService;
+use Widget_Corp_Oops_Admin\Models\Page;
 
 class ContentController
 {
-    private Bootstrap $bootstrap;
     private HeaderServices $headerService;
     private NavigationServices $navigationService;
+    private SubjectService $subjectService;
 
     public function __construct(
-        Bootstrap $bootstrap,
         HeaderServices $headerService,
-        NavigationServices $navigationService
+        NavigationServices $navigationService,
+        SubjectService $subjectService
     ) {
-        $this->bootstrap         = $bootstrap;
-        $this->headerService     = $headerService;
+        $this->headerService = $headerService;
         $this->navigationService = $navigationService;
+        $this->subjectService = $subjectService;
     }
 
     public function index(): void
     {
-        $subjects        = $this->bootstrap->getSubjects();
-        $selectedSubject = $this->bootstrap->getSelectedSubject();
-        $selectedPage    = $this->bootstrap->getSelectedPage();
-        $subjParam       = $_GET['subj'] ?? null;
-        $pageParam       = $_GET['page'] ?? null;
-        $db              = $this->bootstrap->getDB();
+        // Get data from subject service
+        $subjects = $this->subjectService->getSubjects();
+        $selectedSubject = $this->subjectService->getSelectedSubject();
+        $selectedPage = $this->subjectService->getSelectedPage();
+
+        // Get URL parameters
+        $subjParam = $_GET['subj'] ?? null;
+        $pageParam = $_GET['page'] ?? null;
+
+        // Create page model for navigation service
+        $pageModel = new Page();
 
         // Render header
         echo $this->headerService->getHeader('content');
 
         // Render content view
-        include __DIR__ . '/../Views/content.php';
+        include_once __DIR__ . '/../Views/templates/content.php';
         include_once __DIR__ . '/../Views/partials/footer.php';
     }
 }

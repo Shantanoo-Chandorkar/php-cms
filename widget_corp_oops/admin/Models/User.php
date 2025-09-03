@@ -25,7 +25,7 @@ class User
         $this->username = $username;
         $this->password = $password;
         $this->role     = $role;
-        $this->db       = $db ?? new DBConnection('widget_corp_test');
+        $this->db       = $db ?? new DBConnection();
     }
 
     // Getters.
@@ -76,7 +76,7 @@ class User
 
             $hashed = password_hash($password, PASSWORD_DEFAULT);
 
-            $insert = $this->db->conn->prepare(
+            $insert = $this->db->getConnection()->prepare(
                 'INSERT INTO users (username, hashed_password) VALUES (:username, :hashed_password)'
             );
             $insert->execute(
@@ -99,7 +99,7 @@ class User
     public function loginUser(string $username, string $password)
     {
         try {
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'SELECT id, hashed_password FROM users WHERE username = :username LIMIT 1'
             );
             $query->execute(array( ':username' => $username ));
@@ -131,7 +131,7 @@ class User
     public function getAllUsers(): array
     {
         try {
-            $query = $this->db->conn->query('SELECT id, username, role FROM users ORDER BY username ASC');
+            $query = $this->db->getConnection()->query('SELECT id, username, role FROM users ORDER BY username ASC');
             $rows  = $query->fetchAll(PDO::FETCH_ASSOC);
 
             $users = array();
@@ -161,7 +161,7 @@ class User
                 );
             }
 
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'INSERT INTO users (username, hashed_password, role) 
                 VALUES (:username, :hashed_password, :role)'
             );
@@ -172,7 +172,7 @@ class User
                     ':role'            => $role,
                 )
             );
-            return $this->db->conn->lastInsertId();
+            return $this->db->getConnection()->lastInsertId();
         } catch (PDOException $e) {
             die('Error while creating user: ' . $e->getMessage());
         }
@@ -181,7 +181,7 @@ class User
     public function getUserByUserName(string $username): ?array
     {
         try {
-            $query = $this->db->conn->prepare('SELECT * FROM users WHERE username = :username LIMIT 1');
+            $query = $this->db->getConnection()->prepare('SELECT * FROM users WHERE username = :username LIMIT 1');
             $query->execute(array( ':username' => $username ));
             $user = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -194,7 +194,7 @@ class User
     public function getUserById(int $id): ?array
     {
         try {
-            $query = $this->db->conn->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
+            $query = $this->db->getConnection()->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
             $query->execute(array( ':id' => $id ));
             $user = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -240,7 +240,7 @@ class User
 
             $sql = 'UPDATE users SET ' . implode(', ', $fields) . ' WHERE id = :id LIMIT 1';
 
-            $query = $this->db->conn->prepare($sql);
+            $query = $this->db->getConnection()->prepare($sql);
             $query->execute($params);
 
             // Return true if any row was updated
@@ -254,7 +254,7 @@ class User
     {
         try {
             if ($this->getUserById($user_id) !== null) {
-                $query = $this->db->conn->prepare(
+                $query = $this->db->getConnection()->prepare(
                     'DELETE FROM users WHERE id = :id LIMIT 1'
                 );
 

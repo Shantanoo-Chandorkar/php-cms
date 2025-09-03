@@ -6,7 +6,7 @@
                 $subjects,
                 $subjParam,
                 $pageParam,
-                $db
+                $pageModel,
             );
             ?>
             <br/>

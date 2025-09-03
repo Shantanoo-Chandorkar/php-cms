@@ -1,17 +1,17 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../helper/bootstrap.php';
 
-use Widget_Corp_Oops_Helper\Bootstrap;
 use Widget_Corp_Oops_Admin\Controllers\UserController;
 use Widget_Corp_Oops_Admin\Services\HeaderServices;
 use Widget_Corp_Oops_Admin\Services\NavigationServices;
+use Widget_Corp_Oops_Admin\Services\SessionService;
 
-$bootstrap = new Bootstrap('widget_corp_test');
+// Initialize Session.
+$sessionService = new SessionService();
 
 $controller = new UserController(
-    $bootstrap,
+    $sessionService,
     new HeaderServices(),
     new NavigationServices()
 );

@@ -2,13 +2,13 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Widget_Corp_Oops_Helper\Bootstrap;
 use Widget_Corp_Oops_Admin\Controllers\AuthController;
+use Widget_Corp_Oops_Admin\Services\SessionService;
 
-$bootstrap = new Bootstrap('widget_corp_test');
-$session   = $bootstrap->getSession();
+// Initialize Session.
+$sessionService = new SessionService();
 
-// User Controller to access Login functionality.
+// Auth Controller to access Login functionality.
 $controller = new AuthController();
 
 $message = '';
@@ -22,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result  = $controller->handleLoginUser($username, $password);
         $message = $result['message'];
         if ($result['success']) {
-            $session->set('username', $username);
-            header('Location: ../admin/staff.php');
+            $sessionService->set('username', $username);
+            header('Location: ../admin/index.php');
             exit;
         }
     } else {
@@ -31,4 +31,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-include __DIR__ . '/../admin/Views/login.php';
+include_once __DIR__ . '/../admin/Views/templates/login.php';

@@ -2,14 +2,16 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Widget_Corp_Oops_Helper\Bootstrap;
 use Widget_Corp_Oops_Admin\Services\HeaderServices;
+use Widget_Corp_Oops_Admin\Services\SessionService;
 
-$bootstrap      = new Bootstrap('widget_corp_test');
-$header_service = new HeaderServices();
+// Initialize Session
+$sessionService = new SessionService();
+
+$headerService = new HeaderServices();
 
 // Output header.
-echo $header_service->getHeader('admin_index');
+echo $headerService->getHeader('admin_index');
 ?>
 
 <div id="admin-dashboard">

@@ -17,4 +17,4 @@ echo $this->headerServices->getHeader('staff');
         </td>
     </tr>
 </table>
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/../partials/footer.php'; ?>

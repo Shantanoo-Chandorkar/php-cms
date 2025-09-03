@@ -2,12 +2,13 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Widget_Corp_Oops_Helper\Bootstrap;
+use Widget_Corp_Oops_Admin\Services\SessionService;
 
-$bootstrap = new Bootstrap('widget_corp_test');
-$session   = $bootstrap->getSession();
+// Initialize sesion.
+$sessionService = new SessionService();
 
-$session->destroy();   // clear and destroy session
+// Destroy the session.
+$sessionService->destroy();
 
 header('Location: login.php');
 exit;

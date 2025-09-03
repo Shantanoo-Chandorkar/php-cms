@@ -17,7 +17,6 @@
         
         <!-- Exclude ALL Squiz.Commenting.* sniffs -->
         <exclude name="Squiz.Commenting"/>
-        
     </rule>
 
     <!-- Global safety: ignore ALL Squiz.Commenting.* -->

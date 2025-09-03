@@ -6,15 +6,15 @@
                 $subjects,
                 $selected_subject['id'] ?? null,
                 $selected_page['id'] ?? null,
-                $this->bootstrap->getDB()
+                $this->pageModel
             );
             ?>
         </td>
         <td id="page" class="page">
             <h2 class="form-title">Create New Page in: <?php echo $selected_subject['menu_name']; ?></h2>
 
-            <?php require __DIR__ . '/partials/errors.php'; ?>
-            <?php require __DIR__ . '/partials/messages.php'; ?>
+            <?php require __DIR__ . '/../partials/errors.php'; ?>
+            <?php require __DIR__ . '/../partials/messages.php'; ?>
 
             <form action="new_page.php?subj=<?php echo urlencode($selected_subject['id']); ?>" method="post" class="form-subject">
                 <div class="form-group">
@@ -26,7 +26,7 @@
                     <label for="position">Position:</label>
                     <select name="position" id="position" class="input-select">
                         <?php
-                        $page_count = $this->bootstrap->getDB()->count_pages_for_subject($selected_subject['id']);
+                        $page_count = $this->pageModel->countPagesForSubject($selected_subject['id']);
                         for ($count = 1; $count <= $page_count + 1; $count++) {
                             echo "<option value={$count}>{$count}</option>";
                         }

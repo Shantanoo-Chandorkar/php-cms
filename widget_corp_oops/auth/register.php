@@ -2,11 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Widget_Corp_Oops_Helper\Bootstrap;
-
 use Widget_Corp_Oops_Admin\Controllers\AuthController;
-
-$bootstrap = new Bootstrap('widget_corp_test');
 
 // User Controller to access Login functionality.
 $controller = new AuthController();
@@ -29,4 +25,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require __DIR__ . '/../admin/Views/register.php';
+include_once __DIR__ . '/../admin/Views/templates/register.php';

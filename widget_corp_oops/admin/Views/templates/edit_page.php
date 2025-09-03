@@ -5,7 +5,7 @@
                 $subjects,
                 $_GET['subj'] ?? null,
                 $_GET['page'] ?? null,
-                $db
+                $this->pageModel
             ); ?>
         </td>
         <td id="page" class="page">

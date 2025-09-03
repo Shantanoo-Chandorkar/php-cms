@@ -2,18 +2,19 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Widget_Corp_Oops_Helper\Bootstrap;
 use Widget_Corp_Oops_Admin\Services\HeaderServices;
 use Widget_Corp_Oops_Admin\Services\NavigationServices;
+use Widget_Corp_Oops_Admin\Services\SessionService;
+use Widget_Corp_Oops_Admin\Services\SubjectService;
 use Widget_Corp_Oops_Admin\Controllers\ContentController;
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Initialize Session.
+$sessionService = new SessionService();
 
-$bootstrap         = new Bootstrap('widget_corp_test');
+// Other Services
 $headerService     = new HeaderServices();
 $navigationService = new NavigationServices();
+$subjectService = new SubjectService();
 
-$controller = new ContentController($bootstrap, $headerService, $navigationService);
+$controller = new ContentController($headerService, $navigationService, $subjectService);
 $controller->index();

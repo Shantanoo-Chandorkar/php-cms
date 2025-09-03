@@ -17,6 +17,7 @@ class Page
     private DBConnection $db;
 
     public function __construct(
+        ?DBConnection $db = null,
         ?int $id = null,
         ?int $subject_id = null,
         ?string $menu_name = null,
@@ -30,7 +31,7 @@ class Page
         $this->position   = $position;
         $this->visible    = $visible;
         $this->content    = $content;
-        $this->db         = new DBConnection('widget_corp_test');
+        $this->db         = $db ?? new DBConnection();
     }
 
     // Getters.
@@ -94,7 +95,7 @@ class Page
     public function getPages(): array
     {
         try {
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'SELECT * FROM pages ORDER BY subject_id, position ASC'
             );
             $query->execute();
@@ -111,7 +112,7 @@ class Page
         try {
             // :subject_id is a bound parameter so PDO ensures it's treated as a value,
             // and not an executable SQL.
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'SELECT * FROM pages WHERE subject_id = :subject_id ORDER BY position ASC'
             );
             $query->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
@@ -129,7 +130,7 @@ class Page
         try {
             // :id is a bound parameter so PDO ensures it's treated as a value,
             // and not an executable SQL.
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'SELECT * FROM pages WHERE id = :id LIMIT 1'
             );
             $query->bindParam(':id', $id, PDO::PARAM_INT);
@@ -150,7 +151,7 @@ class Page
         string $content
     ): int|false {
         try {
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'INSERT INTO pages 
                 (subject_id, menu_name, position, visible, content)
                 VALUES (:subject_id, :menu_name, :position, :visible, :content)'
@@ -162,7 +163,7 @@ class Page
             $query->bindParam(':content', $content, PDO::PARAM_STR);
             $query->execute();
 
-            return $this->db->conn->lastInsertId();
+            return $this->db->getConnection()->lastInsertId();
         } catch (PDOException $e) {
             error_log('Error while creating new page: ' . $e->getMessage());
             return false;
@@ -178,7 +179,7 @@ class Page
     ): bool {
         try {
             if ($this->getPageById($id) !== null) {
-                $query = $this->db->conn->prepare(
+                $query = $this->db->getConnection()->prepare(
                     'UPDATE pages
                     SET menu_name = :menu_name,
                         position = :position,
@@ -204,7 +205,7 @@ class Page
     {
         try {
             if ($this->getPageById($id) !== null) {
-                $query = $this->db->conn->prepare('DELETE FROM pages WHERE id = :id');
+                $query = $this->db->getConnection()->prepare('DELETE FROM pages WHERE id = :id');
                 $query->bindParam(':id', $id, PDO::PARAM_INT);
                 return $query->execute();
             }
@@ -218,7 +219,7 @@ class Page
     public function countPagesForSubject(int $subject_id): int
     {
         try {
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'SELECT COUNT(*) AS count FROM pages WHERE subject_id = :subject_id'
             );
             $query->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
@@ -234,7 +235,7 @@ class Page
     public function getFirstPositionPageBySubjectId(int $subject_id): ?array
     {
         try {
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'SELECT * FROM pages WHERE subject_id = :subject_id ORDER BY position ASC LIMIT 1'
             );
             $query->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);

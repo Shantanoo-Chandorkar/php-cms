@@ -4,26 +4,11 @@ namespace Widget_Corp_Oops_Frontend\Services;
 
 class FrontendHeaderServices
 {
-    public function getHeader(string $stylesheetName): string
+    public function getHeader(string $stylesheetName): void
     {
         $baseUrl = $this->getSiteURL();
 
-        ob_start();
-        ?>
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Widget Corp Content</title>
-            <link href="<?php echo $baseUrl; ?>stylesheets/<?php echo htmlspecialchars($stylesheetName); ?>.css" 
-                    rel="stylesheet" type="text/css">
-        </head>
-        <body>
-        <div id="header" class="header">
-            <h1>Widget Corp</h1>
-        </div>
-        <div id="main" class="main">
-        <?php
-        return ob_get_clean();
+        require_once  __DIR__ . '/../Views/partials/header.php';
     }
 
     private function getSiteURL(): string

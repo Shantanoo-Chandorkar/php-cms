@@ -15,6 +15,7 @@ class Subject
     private DBConnection $db;
 
     public function __construct(
+        ?DBConnection $db = null,
         ?int $id = null,
         ?string $menu_name = null,
         ?int $position = null,
@@ -24,7 +25,7 @@ class Subject
         $this->menu_name = $menu_name;
         $this->position  = $position;
         $this->visible   = $visible;
-        $this->db        = new DBConnection('widget_corp_test');
+        $this->db        = $db ?? new DBConnection();
     }
 
     // Getters.
@@ -68,7 +69,7 @@ class Subject
     public function getSubjects(): array
     {
         try {
-            $query = $this->db->conn->query('SELECT * FROM subjects ORDER BY position ASC');
+            $query = $this->db->getConnection()->query('SELECT * FROM subjects ORDER BY position ASC');
             return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             die('Error fetchig subjects: ' . htmlspecialchars($e->getMessage()));
@@ -80,7 +81,7 @@ class Subject
         try {
             // :id is a bound parameter so PDO ensures it's treated as a value,
             // and not an executable SQL.
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'SELECT * FROM subjects WHERE id = :id LIMIT 1'
             );
             $query->bindParam(':id', $id, PDO::PARAM_INT);
@@ -98,7 +99,7 @@ class Subject
         try {
             // :menu_name is a bound parameter so PDO ensures it's treated as a value,
             // and not an executable SQL.
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'SELECT * FROM subjects WHERE menu_name = :menu_name LIMIT 1'
             );
             $query->bindParam(':menu_name', $menu_name, PDO::PARAM_STR);
@@ -114,13 +115,12 @@ class Subject
     public function createNewSubject($menu_name, $position, $visible): ?int
     {
         try {
-            $existing_subject = $this->getSubjectByMenuName($menu_name);
-
-            if (null !== $existing_subject) {
-                return false;
+            // enforce uniqueness
+            if ($this->getSubjectByMenuName($menu_name)) {
+                throw new \RuntimeException("Subject with menu_name '$menu_name' already exists.");
             }
 
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'INSERT INTO subjects (menu_name, position, visible)
                 VALUES (:menu_name, :position, :visible)'
             );
@@ -132,7 +132,7 @@ class Subject
             $query->execute();
 
             // Return the new subject ID
-            return $this->db->conn->lastInsertId();
+            return (int) $this->db->getConnection()->lastInsertId();
         } catch (PDOException $e) {
             die('Error creating new subject: ' . htmlspecialchars($e->getMessage()));
         }
@@ -141,7 +141,7 @@ class Subject
     public function updateSubject($id, $menu_name, $position, $visible): int
     {
         try {
-            $query = $this->db->conn->prepare(
+            $query = $this->db->getConnection()->prepare(
                 'UPDATE subjects 
                 SET menu_name = :menu_name, position = :position, visible = :visible 
                 WHERE id = :id'
@@ -165,7 +165,7 @@ class Subject
     {
         try {
             if (null !== $this->getSubjectById($subject_id)) {
-                $query = $this->db->conn->prepare(
+                $query = $this->db->getConnection()->prepare(
                     'DELETE FROM subjects WHERE id = :id LIMIT 1'
                 );
 

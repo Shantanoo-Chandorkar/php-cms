@@ -13,8 +13,8 @@ abstract class DatabaseTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $db = new DBConnection('widget_corp_test');
-        $this->conn = $db->conn;
+        $db = new DBConnection();
+        $this->conn = $db->getConnection();
         $this->conn->beginTransaction(); // start transaction
     }
 

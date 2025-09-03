@@ -6,15 +6,21 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetId = this.getAttribute("data-target");
             const targetList = document.getElementById(targetId);
 
-            if (!targetList) return;
+            if (!targetList) {
+                return;
+            }
 
             // Collapse other open lists
             document.querySelectorAll(".pages.show").forEach(el => {
                 if (el !== targetList) {
                     el.classList.remove("show");
                     const btn = document.querySelector(`[data-target="${el.id}"]`);
-                    if (btn) btn.setAttribute('aria-expanded', 'false');
-                    if (btn?.parentElement) btn.parentElement.classList.remove('active');
+                    if (btn) {
+                        btn.setAttribute('aria-expanded', 'false');
+                    }
+                    if (btn?.parentElement) {
+                        btn.parentElement.classList.remove('active');
+                    }
                 }
             });
 
@@ -25,8 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const subjectItem = this.parentElement;
             if (subjectItem) {
-                if (willShow) subjectItem.classList.add('active');
-                else subjectItem.classList.remove('active');
+                if (willShow) {
+                    subjectItem.classList.add('active');
+                } else {
+                    subjectItem.classList.remove('active');
+                }
             }
         });
     });

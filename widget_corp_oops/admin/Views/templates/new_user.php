@@ -2,25 +2,25 @@
 
 <?php
 // show validation errors if any.
-if (! empty($_SESSION['errors'] ?? array())) : ?>
+if (! empty($this->sessionService->get('errors') ?? array())) : ?>
     <div class="errors">
         <ul>
-            <?php foreach ($_SESSION['errors'] as $error) : ?>
+            <?php foreach ($this->sessionService->get('errors') as $error) : ?>
                 <li><?php echo htmlspecialchars($error); ?></li>
             <?php endforeach; ?>
         </ul>
     </div>
-    <?php unset($_SESSION['errors']); ?>
+    <?php $this->sessionService->unset('errors'); ?>
 <?php endif; ?>
 
 <?php
 // show messages if any
-if (! empty($_SESSION['message'] ?? '')) :
+if (! empty($this->sessionService->get('message') ?? '')) :
     ?>
     <div class="message">
-        <?php echo htmlspecialchars($_SESSION['message']); ?>
+        <?php echo htmlspecialchars($this->sessionService->get('message')); ?>
     </div>
-    <?php unset($_SESSION['message']); ?>
+    <?php $this->sessionService->get('message'); ?>
 <?php endif; ?>
 
 <form action="new_user.php" method="post">

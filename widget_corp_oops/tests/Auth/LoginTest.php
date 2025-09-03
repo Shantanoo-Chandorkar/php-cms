@@ -16,7 +16,7 @@ class LoginTest extends DatabaseTestCase
         parent::setUp();
 
         // Inject the shared test connection into User, then into AuthController
-        $dbConnection = new DBConnection('widget_corp_test', $this->conn);
+        $dbConnection = new DBConnection($this->conn);
         $userModel    = new User($dbConnection);
 
         // AuthController now gets a prepared User instance

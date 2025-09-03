@@ -2,29 +2,29 @@
 
 namespace Widget_Corp_Oops_Admin\Controllers;
 
-use Widget_Corp_Oops_Helper\Bootstrap;
 use Widget_Corp_Oops_Admin\Services\HeaderServices;
 use Widget_Corp_Oops_Admin\Services\NavigationServices;
 use Widget_Corp_Oops_Admin\Services\ValidationServices;
 use Widget_Corp_Oops_Admin\Services\RedirectService;
+use Widget_Corp_Oops_Admin\Services\SessionService;
 use Widget_Corp_Oops_Admin\Models\User;
 
 class UserController
 {
-    private Bootstrap $bootstrap;
     private HeaderServices $headerServices;
     private NavigationServices $navigationServices;
     private ValidationServices $validationServices;
     private RedirectService $redirectService;
+    private SessionService $sessionService;
     private User $userModel;
 
     public function __construct(
-        Bootstrap $bootstrap,
+        SessionService $sessionService,
         HeaderServices $headerServices,
         NavigationServices $navigationServices,
         ValidationServices $validationServices = new ValidationServices()
     ) {
-        $this->bootstrap  = $bootstrap;
+        $this->sessionService  = $sessionService;
         $this->headerServices     = $headerServices;
         $this->navigationServices = $navigationServices;
         $this->validationServices = $validationServices;
@@ -40,13 +40,12 @@ class UserController
         }
 
         echo $this->headerServices->getHeader('forms');
-        include __DIR__ . '/../Views/new_user.php';
-        include __DIR__ . '/../Views/partials/footer.php';
+        include_once __DIR__ . '/../Views/templates/new_user.php';
+        include_once __DIR__ . '/../Views/partials/footer.php';
     }
 
     private function handleCreateUser(): void
     {
-        $session = $this->bootstrap->getSession();
 
         $errors          = array();
         $required_fields = array( 'username', 'password', 'role' );
@@ -60,7 +59,7 @@ class UserController
         $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
 
         if (! empty($errors)) {
-            $session->set('errors', $errors);
+            $this->sessionService->set('errors', $errors);
             $this->redirectService->redirect('new_user.php');
         }
 
@@ -78,15 +77,13 @@ class UserController
         if ($new_user_id) {
             $this->redirectService->redirect('staff.php');
         } else {
-            $session->set('message', 'User already exists.');
+            $this->sessionService->set('message', 'User already exists.');
             $this->redirectService->redirect('new_user.php');
         }
     }
 
     public function update(): void
     {
-        $session = $this->bootstrap->getSession();
-
         $userId = intval($_GET['user'] ?? 0);
         if ($userId === 0) {
             $this->redirectService->redirect('content.php');
@@ -94,7 +91,7 @@ class UserController
 
         $selectedUser = $this->userModel->getUserById($userId);
         if (! $selectedUser) {
-            $session->set('message', 'User not found.');
+            $this->sessionService->set('message', 'User not found.');
             $this->redirectService->redirect('content.php');
         }
 
@@ -106,14 +103,12 @@ class UserController
         // GET request → show form
         echo $this->headerServices->getHeader('forms');
         $user = $selectedUser;
-        include __DIR__ . '/../Views/edit_user.php';
-        include __DIR__ . '/../Views/partials/footer.php';
+        include_once __DIR__ . '/../Views/templates/edit_user.php';
+        include_once __DIR__ . '/../Views/partials/footer.php';
     }
 
     private function handleUpdateUser(int $userId, array $selectedUser): void
     {
-        $session = $this->bootstrap->getSession();
-
         $errors          = array();
         $required_fields = array( 'username', 'password', 'role' );
         $errors          = $this->validationServices->validateRequiredFields($required_fields);
@@ -126,7 +121,7 @@ class UserController
         $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
 
         if (! empty($errors)) {
-            $session->set('errors', $errors);
+            $this->sessionService->set('errors', $errors);
             $this->redirectService->redirect('edit_user.php?user=' . urlencode($userId));
         }
 
@@ -144,7 +139,7 @@ class UserController
 
         $success = $this->userModel->updateUser($userId, $username, $hashed_password, $role);
 
-        $session->set('message', $success ? 'User updated successfully!' : 'No changes were made.');
+        $this->sessionService->set('message', $success ? 'User updated successfully!' : 'No changes were made.');
         $this->redirectService->redirect('staff.php');
     }
 
