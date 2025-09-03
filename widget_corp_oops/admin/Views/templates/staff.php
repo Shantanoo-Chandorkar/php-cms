@@ -1,5 +1,5 @@
 <?php
-echo $this->headerServices->getHeader('staff');
+echo $this->headerServices->getHeader('staff', $this->sessionService);
 ?>
 <table id="structure" class="structure">
     <tr>

@@ -78,10 +78,10 @@ class PageTest extends DatabaseTestCase
     {
         $page = $this->makePage();
 
-        $page->createNewPage(5, 'Page One', 1, true, 'First');
-        $page->createNewPage(5, 'Page Two', 2, true, 'Second');
+        $page->createNewPage(10, 'Page One', 1, true, 'First');
+        $page->createNewPage(10, 'Page Two', 2, true, 'Second');
 
-        $count = $page->countPagesForSubject(5);
+        $count = $page->countPagesForSubject(10);
 
         $this->assertIsInt($count);
         $this->assertSame(2, $count);

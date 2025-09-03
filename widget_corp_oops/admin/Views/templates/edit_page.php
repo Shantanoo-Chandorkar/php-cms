@@ -1,16 +1,14 @@
 <table id="structure" class="structure">
     <tr>
         <td id="navigation" class="navigation">
-            <?php echo $this->navigationServices->renderNavigation(
-                $subjects,
-                $_GET['subj'] ?? null,
-                $_GET['page'] ?? null,
-                $this->pageModel
-            ); ?>
+            <?php echo $navigationHtml ?>
         </td>
         <td id="page" class="page">
             <h2 class="form-title">Edit Page: <?php echo $selected_page['menu_name']; ?></h2>
-
+            <?php
+                $errorSession =  $this->sessionService->get('errors');
+                $messageSession = $this->sessionService->get('message');
+            ?>
             <?php require 'Views/partials/errors.php'; ?>
             <?php require 'Views/partials/messages.php'; ?>
 

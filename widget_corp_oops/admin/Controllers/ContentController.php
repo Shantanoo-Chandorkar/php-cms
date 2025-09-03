@@ -5,6 +5,7 @@ namespace Widget_Corp_Oops_Admin\Controllers;
 use Widget_Corp_Oops_Admin\Services\HeaderServices;
 use Widget_Corp_Oops_Admin\Services\NavigationServices;
 use Widget_Corp_Oops_Admin\Services\SubjectService;
+use Widget_Corp_Oops_Admin\Services\SessionService;
 use Widget_Corp_Oops_Admin\Models\Page;
 
 class ContentController
@@ -12,6 +13,7 @@ class ContentController
     private HeaderServices $headerService;
     private NavigationServices $navigationService;
     private SubjectService $subjectService;
+    private SessionService $sessionService;
 
     public function __construct(
         HeaderServices $headerService,
@@ -21,6 +23,7 @@ class ContentController
         $this->headerService = $headerService;
         $this->navigationService = $navigationService;
         $this->subjectService = $subjectService;
+        $this->sessionService = new SessionService();
     }
 
     public function index(): void
@@ -38,7 +41,7 @@ class ContentController
         $pageModel = new Page();
 
         // Render header
-        echo $this->headerService->getHeader('content');
+        echo $this->headerService->getHeader('content', $this->sessionService);
 
         // Render content view
         include_once __DIR__ . '/../Views/templates/content.php';

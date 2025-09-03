@@ -53,7 +53,7 @@ class PageController
         $selected_page = $this->subjectService->getSelectedPage();
 
         // Create page model for navigation service
-        echo $this->headerServices->getHeader('edit_subject');
+        echo $this->headerServices->getHeader('edit_subject', $this->sessionService);
 
         include_once __DIR__ . '/../Views/templates/new_page.php';
         include_once __DIR__ . '/../Views/partials/footer.php';
@@ -69,7 +69,7 @@ class PageController
         $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
 
         if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
+            $this->sessionService->set('errors', $errors);
             $this->redirectService->redirect('new_page.php?subj=' . urlencode($subjectId));
         }
 
@@ -81,10 +81,10 @@ class PageController
         $newPageId = $this->pageModel->createNewPage($subjectId, $menuName, $position, $visible, $content);
 
         if ($newPageId) {
-            $_SESSION['message'] = 'The page was successfully created!';
+            $this->sessionService->set('message', 'The page was successfully created!');
             $this->redirectService->redirect('edit_page.php?page=' . urlencode($newPageId));
         } else {
-            $_SESSION['message'] = 'Page could not be created.';
+            $this->sessionService->set('message', 'Page could not be created.');
             $this->redirectService->redirect('new_page.php?subj=' . urlencode($subjectId));
         }
     }
@@ -104,7 +104,7 @@ class PageController
             $errors          = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
 
             if (!empty($errors)) {
-                $_SESSION['errors'] = $errors;
+                $this->sessionService->set('errors', $errors);
                 $this->redirectService->redirect('edit_page.php?page=' . urlencode($pageId));
             }
 
@@ -116,9 +116,9 @@ class PageController
             $result = $this->pageModel->updatePageById($pageId, $menuName, $position, $visible, $content);
 
             if ($result) {
-                $_SESSION['message'] = 'The page was successfully updated!';
+                $this->sessionService->set('message', 'The page was successfully updated!');
             } else {
-                $_SESSION['message'] = 'No changes were made.';
+                $this->sessionService->set('message', 'No changes were made.');
             }
 
             $this->redirectService->redirect('edit_page.php?page=' . urlencode($pageId));
@@ -130,7 +130,14 @@ class PageController
         $selected_subject  = $this->subjectService->getSelectedSubject();
         $selected_page     = $this->subjectService->getSelectedPage();
 
-        echo $this->headerServices->getHeader('edit_subject');
+        echo $this->headerServices->getHeader('edit_subject', $this->sessionService);
+
+        $navigationHtml = $this->navigationServices->renderNavigation(
+            $subjects,
+            $_GET['subj'] ?? null,
+            $_GET['page'] ?? null,
+            $this->pageModel
+        );
 
         include_once __DIR__ . '/../Views/templates/edit_page.php';
         include_once __DIR__ . '/../Views/partials/footer.php';

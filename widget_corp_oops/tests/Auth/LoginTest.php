@@ -10,6 +10,7 @@ use Widget_Corp_Oops_Admin\Models\User;
 class LoginTest extends DatabaseTestCase
 {
     private AuthController $controller;
+    private User $userModel;
 
     protected function setUp(): void
     {
@@ -17,10 +18,10 @@ class LoginTest extends DatabaseTestCase
 
         // Inject the shared test connection into User, then into AuthController
         $dbConnection = new DBConnection($this->conn);
-        $userModel    = new User($dbConnection);
+        $this->userModel    = new User($dbConnection);
 
         // AuthController now gets a prepared User instance
-        $this->controller = new AuthController($userModel);
+        $this->controller = new AuthController($this->userModel);
     }
 
     /**
@@ -28,7 +29,8 @@ class LoginTest extends DatabaseTestCase
      */
     public function testLoginUserSuccess(): void
     {
-        $this->controller->handleRegisterUser('testuser', 'Password1!');
+        $hashed = password_hash('Password1!', PASSWORD_DEFAULT);
+        $this->userModel->createNewUser('testuser', $hashed, 'admin');
 
         $result = $this->controller->handleLoginUser('testuser', 'Password1!');
 
@@ -43,11 +45,25 @@ class LoginTest extends DatabaseTestCase
      */
     public function testLoginUserIncorrectPassword(): void
     {
-        $this->controller->handleRegisterUser('testuser', 'Password1!');
+        $hashed = password_hash('Password1!', PASSWORD_DEFAULT);
+        $this->userModel->createNewUser('testuser', $hashed, 'admin');
 
         $result = $this->controller->handleLoginUser('testuser', 'WrongPassword');
 
         $this->assertFalse($result['success']);
         $this->assertEquals('Invalid username or password.', $result['message']);
+    }
+
+    /**
+     * Test login with subscriber access
+     */
+    public function testLoginUserAccessDenied(): void
+    {
+        $this->controller->handleRegisterUser('testuser', 'Password1!');
+
+        $result = $this->controller->handleLoginUser('testuser', 'Password1!');
+
+        $this->assertFalse($result['success']);
+        $this->assertEquals('Access Denied.', $result['message']);
     }
 }

@@ -51,7 +51,7 @@ class SubjectController
         // We need to remove this line after refactoring.
         $pageModel = new Page();
 
-        echo $this->headerService->getHeader('edit_subject');
+        echo $this->headerService->getHeader('edit_subject', $this->sessionService);
 
         // View for the new subject forms.
         include_once __DIR__ . '/../Views/templates/new_subject.php';
@@ -69,7 +69,7 @@ class SubjectController
         $errors        = array_merge($errors, $this->validationService->validateMaxLengths($field_lengths));
 
         if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
+            $this->sessionService->set('errors', $errors);
             $this->redirectService->redirect('new_subject.php');
         }
 
@@ -82,7 +82,7 @@ class SubjectController
         if ($new_id) {
             $this->redirectService->redirect('content.php');
         } else {
-            $_SESSION['errors'] = ['Subject with this name already exists.'];
+            $this->sessionService->set('errors', ['Subject with this name already exists.']);
             $this->redirectService->redirect('new_subject.php');
         }
     }
@@ -112,7 +112,7 @@ class SubjectController
             );
 
             if (! empty($errors)) {
-                $_SESSION['errors'] = $errors;
+                $this->sessionService->set('errors', $errors);
                 $this->redirectService->redirect('edit_subject.php?subj=' . urlencode($subjParam));
             }
 
@@ -123,9 +123,9 @@ class SubjectController
             $result = $this->subjectModel->updateSubject($subjParam, $menuName, $position, $visible);
 
             if ($result > 0) {
-                $_SESSION['message'] = 'The subject was successfully updated!';
+                $this->sessionService->set('message', 'The subject was successfully updated!');
             } else {
-                $_SESSION['message'] = 'No changes were made.';
+                $this->sessionService->set('message', 'No changes were made.');
             }
 
             $this->redirectService->redirect('edit_subject.php?subj=' . urlencode($subjParam));
@@ -134,10 +134,17 @@ class SubjectController
         $pageModel = new Page();
 
         // Render the template
-        echo $this->headerService->getHeader('edit_subject');
+        echo $this->headerService->getHeader('edit_subject', $this->sessionService);
 
-        include_once __DIR__ . '/../Views/templates/edit_subject.php';
-        include_once __DIR__ . '/../Views/partials/footer.php';
+        $navigationHtml = $this->navigationServices->renderNavigation(
+            $subjects,
+            $subjParam,
+            $pageParam,
+            $pageModel
+        );
+
+        include __DIR__ . '/../Views/templates/edit_subject.php';
+        include __DIR__ . '/../Views/partials/footer.php';
     }
 
     public function delete(): void

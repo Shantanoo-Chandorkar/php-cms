@@ -20,7 +20,7 @@ if (! empty($this->sessionService->get('message') ?? '')) :
     <div class="message">
         <?php echo htmlspecialchars($this->sessionService->get('message')); ?>
     </div>
-    <?php $this->sessionService->get('message'); ?>
+    <?php $this->sessionService->unset('message'); ?>
 <?php endif; ?>
 
 <form action="new_user.php" method="post">

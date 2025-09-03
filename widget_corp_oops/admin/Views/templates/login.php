@@ -9,6 +9,7 @@
     <h2>Login</h2>
     <?php if ($message) : ?>
         <p><?php echo htmlspecialchars($message); ?></p>
+        <?php $sessionService->unset('message'); // Clear after showing ?>
     <?php endif; ?>
     <form method="post" action="">
         <label for="username">Username:</label>

@@ -39,7 +39,8 @@ class UserController
             return;
         }
 
-        echo $this->headerServices->getHeader('forms');
+        echo $this->headerServices->getHeader('forms', $this->sessionService);
+
         include_once __DIR__ . '/../Views/templates/new_user.php';
         include_once __DIR__ . '/../Views/partials/footer.php';
     }
@@ -101,7 +102,8 @@ class UserController
         }
 
         // GET request → show form
-        echo $this->headerServices->getHeader('forms');
+        echo $this->headerServices->getHeader('forms', $this->sessionService);
+
         $user = $selectedUser;
         include_once __DIR__ . '/../Views/templates/edit_user.php';
         include_once __DIR__ . '/../Views/partials/footer.php';

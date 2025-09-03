@@ -1,7 +1,7 @@
-<?php if (! empty($_SESSION['errors'])) : ?>
+<?php if (! empty($errorSession)) : ?>
     <div class="error-messages">
         <ul>
-            <?php foreach ($_SESSION['errors'] as $error_field) : ?>
+            <?php foreach ($errorSession as $error_field) : ?>
                 <li>
                     <?php
                         // Customize messages per field
@@ -26,5 +26,5 @@
             <?php endforeach; ?>
         </ul>
     </div>
-    <?php unset($_SESSION['errors']); // Clear after showing ?>
+    <?php $this->sessionService->unset('errors'); // Clear after showing ?>
 <?php endif; ?>

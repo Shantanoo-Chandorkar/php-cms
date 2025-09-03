@@ -49,24 +49,42 @@ class UserTest extends DatabaseTestCase
     public function testLoginUserSuccess(): void
     {
         $user = $this->makeUser();
-        $user->registerUser('login_test', 'secret');
+
+        $hashed = password_hash('secret', PASSWORD_DEFAULT);
+        $user->createNewUser('login_test', $hashed, 'admin');
 
         $result = $user->loginUser('login_test', 'secret');
 
         $this->assertTrue($result['success']);
         $this->assertSame('Login successful!', $result['message']);
-        $this->assertEquals('login_test', $_SESSION['username']);
     }
 
     public function testLoginUserFailsWithWrongPassword(): void
     {
         $user = $this->makeUser();
-        $user->registerUser('wrong_pw_test', 'rightpass');
+
+        $hashed = password_hash('rightpass', PASSWORD_DEFAULT);
+        $user->createNewUser('wrong_pw_test', $hashed, 'admin');
 
         $result = $user->loginUser('wrong_pw_test', 'wrongpass');
 
         $this->assertFalse($result['success']);
         $this->assertSame('Invalid username or password.', $result['message']);
+    }
+
+    /**
+     * Test login with subscriber access
+     */
+    public function testLoginUserAccessDenied(): void
+    {
+        $user = $this->makeUser();
+
+        $user->registerUser('testuser', 'Password1!');
+
+        $result = $user->loginUser('testuser', 'Password1!');
+
+        $this->assertFalse($result['success']);
+        $this->assertEquals('Access Denied.', $result['message']);
     }
 
     public function testCreateNewUserAndFetchById(): void

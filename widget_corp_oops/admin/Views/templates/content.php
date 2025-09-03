@@ -9,7 +9,6 @@
                 $pageModel,
             );
             ?>
-            <br/>
             <a href="new_subject.php">+ Add a new subject</a>
         </td>
         <td id="page" class="page">

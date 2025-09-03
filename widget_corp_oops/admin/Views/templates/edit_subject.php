@@ -1,18 +1,11 @@
+<?php
+    $errorSession = $this->sessionService->get('errors');
+    $messageSession = $this->sessionService->get('message');
+?>
 <table id="structure" class="structure">
     <tr>
         <td id="navigation" class="navigation">
-            <?php
-            echo $this->navigationServices->renderNavigation(
-                $subjects,
-                $subjParam,
-                $pageParam,
-                $pageModel
-            );
-            ?>
-            <?php
-                $errorSession = $this->sessionService->get('errors');
-                $messageSession = $this->sessionService->get('message');
-            ?>
+            <?php echo $navigationHtml; ?>
         </td>
         <td id="page" class="page">
             <h2 class="form-title">

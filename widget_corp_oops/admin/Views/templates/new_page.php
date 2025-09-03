@@ -13,6 +13,10 @@
         <td id="page" class="page">
             <h2 class="form-title">Create New Page in: <?php echo $selected_subject['menu_name']; ?></h2>
 
+            <?php
+                $errorSession = $this->sessionService->get('errors');
+                $messageSession = $this->sessionService->get('message');
+            ?>
             <?php require __DIR__ . '/../partials/errors.php'; ?>
             <?php require __DIR__ . '/../partials/messages.php'; ?>
 

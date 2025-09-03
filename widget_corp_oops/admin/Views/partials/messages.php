@@ -1,6 +1,6 @@
-<?php if (! empty($_SESSION['message'])) : ?>
+<?php if (! empty($messageSession)) : ?>
     <div class="flash-message">
-        <?php echo htmlspecialchars($_SESSION['message']); ?>
+        <?php echo htmlspecialchars($messageSession); ?>
     </div>
-    <?php unset($_SESSION['message']); // Clear after showing ?>
+    <?php $this->sessionService->unset('message'); // Clear after showing ?>
 <?php endif; ?>

@@ -100,18 +100,19 @@ class User
     {
         try {
             $query = $this->db->getConnection()->prepare(
-                'SELECT id, hashed_password FROM users WHERE username = :username LIMIT 1'
+                'SELECT id, hashed_password, role FROM users WHERE username = :username LIMIT 1'
             );
             $query->execute(array( ':username' => $username ));
             $user = $query->fetch(PDO::FETCH_ASSOC);
 
-            if ($user && password_verify($password, $user['hashed_password'])) {
-                // Start session and store user ID
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
-                $_SESSION['user_id']  = $user['id'];
-                $_SESSION['username'] = $username;
+            if ($user && $user['role'] === 'subscriber') {
+                return array(
+                    'success' => false,
+                    'message' => 'Access Denied.',
+                );
+            }
+
+            if ($user && password_verify($password, $user['hashed_password']) && $user['role'] === 'admin') {
                 return array(
                     'success' => true,
                     'message' => 'Login successful!',
