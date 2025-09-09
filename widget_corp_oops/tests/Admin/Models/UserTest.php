@@ -92,9 +92,9 @@ class UserTest extends DatabaseTestCase
         $user = $this->makeUser();
         $id = $user->createNewUser('custom_user', password_hash('123', PASSWORD_DEFAULT), 'admin');
 
-        $this->assertIsNumeric($id);
+        $this->assertIsNumeric($id['message']);
 
-        $fetched = $user->getUserById((int) $id);
+        $fetched = $user->getUserById((int) $id['message']);
         $this->assertSame('custom_user', $fetched['username']);
         $this->assertSame('admin', $fetched['role']);
     }
@@ -117,11 +117,11 @@ class UserTest extends DatabaseTestCase
         $user = $this->makeUser();
         $id = $user->createNewUser('old_name', password_hash('123', PASSWORD_DEFAULT), 'viewer');
 
-        $result = $user->updateUser((int) $id, username: 'new_name');
+        $result = $user->updateUser((int) $id['message'], username: 'new_name');
 
         $this->assertTrue($result);
 
-        $fetched = $user->getUserById((int) $id);
+        $fetched = $user->getUserById((int) $id['message']);
         $this->assertSame('new_name', $fetched['username']);
     }
 
@@ -130,7 +130,7 @@ class UserTest extends DatabaseTestCase
         $user = $this->makeUser();
         $id = $user->createNewUser('some_user', password_hash('123', PASSWORD_DEFAULT), 'viewer');
 
-        $result = $user->updateUser((int) $id);
+        $result = $user->updateUser((int) $id['message']);
 
         $this->assertFalse($result);
     }
@@ -140,7 +140,7 @@ class UserTest extends DatabaseTestCase
         $user = $this->makeUser();
         $id = $user->createNewUser('delete_me', password_hash('123', PASSWORD_DEFAULT), 'viewer');
 
-        $result = $user->deleteUserById((string) $id);
+        $result = $user->deleteUserById((string) $id['message']);
 
         $this->assertTrue($result);
 
