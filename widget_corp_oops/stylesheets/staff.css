@@ -1,50 +1,25 @@
-/* Reset */
-body,
-h1,
-h2,
-p,
-ul {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    line-height: 1.6;
-}
-
-/* Header always full width */
-.header {
-    width: 100%;
-    background: #2c3e50;
-    color: #fff;
-    padding: 15px;
-    text-align: center;
-}
-
+/* Reset some elements (already in admin.css, keep minimal here) */
 .sub-title {
     margin-top: 10px;
 }
 
-/* Main body as two columns */
-table, tbody, tr {
-    width: 100%;
-}
-
-tr {
+/* Structure layout: flex container */
+#structure {
     display: flex;
+    width: 100%;
+    gap: 20px;
+    /* spacing between nav and page */
 }
 
-/* Navigation: 1 part */
-.navigation {
+/* Navigation sidebar: 25% width */
+#navigation {
     flex: 1;
     background: #ecf0f1;
     padding: 20px;
     box-sizing: border-box;
 }
 
-/* Page: 3 parts */
+/* Page content area: 75% width */
 .page {
     flex: 3;
     background: #fff;
@@ -55,8 +30,9 @@ tr {
 
 /* Menu list */
 .menu {
-    list-style-type: none;
+    list-style: none;
     margin-top: 10px;
+    padding-left: 0;
 }
 
 .menu li {
@@ -68,15 +44,20 @@ tr {
     text-decoration: none;
 }
 
-.menu a:hover {
+.menu a:hover,
+.menu a:focus {
     text-decoration: underline;
+    outline: none;
 }
 
-/* Footer full width */
-.footer {
-    width: 100%;
-    background: #2c3e50;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
+/* Flash / Success message */
+.flash-message {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
 }

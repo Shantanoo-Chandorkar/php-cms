@@ -20,7 +20,7 @@ echo $headerService->getHeader('admin_index', $sessionService);
 
 <div id="admin-dashboard">
     <h1>Admin Dashboard</h1>
-    <nav id="admin-navigation">
+    <nav id="admin-navigation" aria-label="Admin Dashboard Navigation">
         <ul>
             <li><a href="new_subject.php">Add New Subject</a></li>
             <li><a href="new_user.php">Add New User</a></li>
@@ -29,3 +29,5 @@ echo $headerService->getHeader('admin_index', $sessionService);
         </ul>
     </nav>
 </div>
+
+<?php require_once __DIR__ . "/Views/partials/footer.php";

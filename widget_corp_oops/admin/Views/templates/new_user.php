@@ -1,50 +1,57 @@
-<h2 class="title">Add New User</h2>
+<h2 id="new-user-title" class="new-user-title">Add New User</h2>
 
+<!-- Error messages -->
 <?php
-// show validation errors if any.
-if (! empty($this->sessionService->get('errors') ?? array())) : ?>
-    <div class="errors">
+$errors = $this->sessionService->get('errors') ?? [];
+if (!empty($errors)) : ?>
+    <div class="errors" role="alert" aria-live="assertive" tabindex="-1">
         <ul>
-            <?php foreach ($this->sessionService->get('errors') as $error) : ?>
-                <li><?php echo htmlspecialchars($error); ?></li>
+            <?php foreach ($errors as $error) : ?>
+                <li>
+                    <?php
+                        // Customize messages per field
+                    switch ($error) {
+                        case 'username':
+                            echo 'Username is required.';
+                            break;
+                        case 'password':
+                            echo 'Password is required.';
+                            break;
+                        case 'role':
+                            echo 'Role is required.';
+                            break;
+                        default:
+                            echo "Unknown error with $error.";
+                    }
+                    ?>
+                </li>
             <?php endforeach; ?>
         </ul>
     </div>
     <?php $this->sessionService->unset('errors'); ?>
 <?php endif; ?>
 
-<?php
-// show messages if any
-if (! empty($this->sessionService->get('message') ?? '')) :
-    ?>
-    <div class="message">
-        <?php echo htmlspecialchars($this->sessionService->get('message')); ?>
+<form action="new_user.php" method="post" aria-labelledby="new-user-title" class="form-subject">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" maxlength="30" required aria-required="true" />
     </div>
-    <?php $this->sessionService->unset('message'); ?>
-<?php endif; ?>
 
-<form action="new_user.php" method="post">
-    <p>
-        <label for="username">Username:</label><br>
-        <input type="text" name="username" id="username" maxlength="30" required>
-    </p>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required aria-required="true" />
+    </div>
 
-    <p>
-        <label for="password">Password:</label><br>
-        <input type="password" name="password" id="password" required>
-    </p>
-
-    <p>
-        <label for="role">Role:</label><br>
+    <div class="form-group">
+        <label for="role">Role:</label>
         <select name="role" id="role">
             <option value="admin">Admin</option>
             <option value="subscriber" selected>Subscriber</option>
         </select>
-    </p>
+    </div>
 
-    <p>
-        <button type="submit">Create User</button>
-    </p>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Create User</button>
+        <a href="staff.php" class="btn btn-secondary">Cancel</a>
+    </div>
 </form>
-
-<p><a href="staff.php">Cancel</a></p>

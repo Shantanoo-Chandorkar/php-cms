@@ -122,28 +122,50 @@
     margin-bottom: 5px;
 }
 
-/* Table structure */
+/* Layout: Structure */
 #structure {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    /* space between navigation and page */
     width: 100%;
-    border-collapse: collapse;
 }
 
+/* Navigation sidebar */
 #navigation {
-    width: 20%;
-    vertical-align: top;
+    flex: 1;
+    /* 25% of the width */
     padding-right: 20px;
+    box-sizing: border-box;
 }
 
+/* Main page content */
 #page {
-    width: 75%;
-    vertical-align: top;
+    flex: 3;
+    /* 75% of the width */
+    box-sizing: border-box;
 }
 
+/* Form page header */
 h2.form-title {
     margin-top: 0;
     margin-bottom: 20px;
 }
 
+/* Link to add new page */
 .new-page-link-container {
     margin-top: 1rem;
+}
+
+/* Responsive: stack navigation and page on small screens */
+@media (max-width: 768px) {
+    #structure {
+        flex-direction: column;
+    }
+
+    #navigation,
+    #page {
+        flex: 1 1 100%;
+        padding-right: 0;
+    }
 }

@@ -78,7 +78,7 @@ tr {
 .page-item {
     margin: 6px 0;
     padding: 4px 8px;
-    border-left: 3px solid #3498db;
+    border-left: 3px solid cadetblue;
     background: #fff;
     border-radius: 3px;
     cursor: pointer;
@@ -101,13 +101,13 @@ tr {
 
 /* Highlight active subject */
 .subject-item.active {
-    background: #34495e;
+    background: lightsteelblue;
     color: #fff;
     border-radius: 4px;
 }
 
 .subject-item.active a {
-    color: #fff;
+    color: darkblue;
     font-weight: bold;
     text-decoration: none;
 }

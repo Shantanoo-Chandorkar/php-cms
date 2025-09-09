@@ -61,9 +61,19 @@ class SubjectController
 
     public function handleFormSubmission(): void
     {
+        $menu_name = $_POST['menu_name'];
+        $position  = $_POST['position'];
+        $visible   = $_POST['visible'];
+
+        $data = array(
+            'menu_name' => $menu_name,
+            'position' => $position,
+            'visible' => $visible,
+        );
+
         $errors          = [];
         $required_fields = ['menu_name', 'position', 'visible'];
-        $errors          = $this->validationService->validateRequiredFields($required_fields);
+        $errors          = $this->validationService->validateRequiredFields($required_fields, $data);
 
         $field_lengths = ['menu_name' => 30];
         $errors        = array_merge($errors, $this->validationService->validateMaxLengths($field_lengths));
@@ -72,10 +82,6 @@ class SubjectController
             $this->sessionService->set('errors', $errors);
             $this->redirectService->redirect('new_subject.php');
         }
-
-        $menu_name = $_POST['menu_name'];
-        $position  = $_POST['position'];
-        $visible   = $_POST['visible'];
 
         $new_id = $this->subjectModel->createNewSubject($menu_name, $position, $visible);
 
@@ -100,25 +106,33 @@ class SubjectController
 
         // Handle form POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $menuName = $_POST['menu_name'];
+            $position = (int) $_POST['position'];
+            $visible  = (int) $_POST['visible'];
+
             $errors = array();
 
-            // Required + length checks
-            $errors = $this->validationService->validateRequiredFields(
-                array('menu_name', 'position', 'visible' )
+            $data = array(
+                'menu_name' => $menuName,
+                'position' => $position,
+                'visible' => $visible,
             );
+
+            // Required + length checks
+            $errors = $this->validationService->validateRequiredFields(array('menu_name', 'position', 'visible' ), $data);
             $errors = array_merge(
                 $errors,
-                $this->validationService->validateMaxLengths(array('menu_name' => 30 ))
+                $this->validationService->validateMaxLengths(array('menu_name' => 30 ), $data)
             );
+
+            error_log("Subj param " . $subjParam);
+            error_log("Subj param " . $subjParam);
+            error_log("Subj param " . $subjParam);
 
             if (! empty($errors)) {
                 $this->sessionService->set('errors', $errors);
                 $this->redirectService->redirect('edit_subject.php?subj=' . urlencode($subjParam));
             }
-
-            $menuName = $_POST['menu_name'];
-            $position = (int) $_POST['position'];
-            $visible  = (int) $_POST['visible'];
 
             $result = $this->subjectModel->updateSubject($subjParam, $menuName, $position, $visible);
 

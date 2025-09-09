@@ -79,9 +79,10 @@ class UserController
         }
 
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $new_user_id     = $this->userModel->createNewUser($username, $hashed_password, $role);
+        $new_user     = $this->userModel->createNewUser($username, $hashed_password, $role);
 
-        if ($new_user_id) {
+        if ($new_user['success']) {
+            $this->sessionService->set('message', 'User created successfully.');
             $this->redirectService->redirect('staff.php');
         } else {
             $this->sessionService->set('message', 'User already exists.');
@@ -158,6 +159,7 @@ class UserController
         $success = $this->userModel->updateUser($userId, $username, $hashed_password, $role);
 
         $this->sessionService->set('message', $success ? 'User updated successfully!' : 'No changes were made.');
+        $this->sessionService->set('username', $success ? $username : $this->sessionService->get('username'));
         $this->redirectService->redirect('staff.php');
         return;
     }

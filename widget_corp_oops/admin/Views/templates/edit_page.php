@@ -1,63 +1,109 @@
-<table id="structure" class="structure">
-    <tr>
-        <td id="navigation" class="navigation">
-            <?php echo $navigationHtml ?>
-        </td>
-        <td id="page" class="page">
-            <h2 class="form-title">Edit Page: <?php echo $selected_page['menu_name']; ?></h2>
-            <?php
-                $errorSession =  $this->sessionService->get('errors');
-                $messageSession = $this->sessionService->get('message');
-            ?>
-            <?php require 'Views/partials/errors.php'; ?>
-            <?php require 'Views/partials/messages.php'; ?>
+<?php
+    $errorSession = $this->sessionService->get('errors');
+    $messageSession = $this->sessionService->get('message');
+?>
+<div id="structure" class="structure">
 
-            <form action="edit_page.php?page=<?php echo urlencode($selected_page['id']); ?>" method="post" class="form-subject">
-                <div class="form-group">
-                    <label for="menu_name">Page Name:</label>
-                    <input type="text" name="menu_name" id="menu_name" class="input-text"
-                           value="<?php echo $selected_page['menu_name']; ?>" />
-                </div>
-                
-                <div class="form-group">
-                    <label for="position">Position:</label>
-                    <select name="position" id="position" class="input-select">
-                        <?php
-                            $page_count = $this->pageModel->countPagesForSubject($selected_page['subject_id']);
-                        for ($count = 1; $count <= $page_count + 1; $count++) {
-                            echo "<option value={$count}";
-                            if ($selected_page['position'] === $count) {
-                                echo ' selected';
+    <!-- Navigation sidebar -->
+    <nav id="navigation" class="navigation" aria-label="Admin navigation">
+        <?php echo $navigationHtml; ?>
+    </nav>
+
+    <!-- Main content area -->
+    <section id="page" class="page" tabindex="-1" aria-labelledby="page-title">
+
+        <h2 id="page-title" class="form-title">
+            Edit Page: <?php echo htmlspecialchars($selected_page['menu_name']); ?>
+        </h2>
+
+        <!-- Error messages -->
+        <?php if (!empty($errorSession)) : ?>
+            <div id="form-errors" class="error-messages" role="alert" aria-live="assertive">
+                <ul>
+                    <?php foreach ($errorSession as $errorField) : ?>
+                        <li>
+                            <?php
+                            switch ($errorField) {
+                                case 'menu_name':
+                                    echo htmlspecialchars('Page name is required.');
+                                    break;
+                                case 'position':
+                                    echo htmlspecialchars('Position field is required.');
+                                    break;
+                                case 'visible':
+                                    echo htmlspecialchars('Visible field is required.');
+                                    break;
+                                case 'content':
+                                    echo htmlspecialchars('Content is required.');
+                                    break;
+                                default:
+                                    echo htmlspecialchars("Unknown error with {$errorField}.");
                             }
-                            echo ">{$count}</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
+                            ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <?php $this->sessionService->unset('errors'); ?>
+        <?php endif; ?>
 
-                <div class="form-group">
-                    <label>Visible:</label>
-                    <label class="radio-option">
-                        <input type="radio" name="visible" value="0" <?php echo $selected_page['visible'] === 0 ? 'checked' : ''; ?> /> No
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="visible" value="1" <?php echo $selected_page['visible'] === 1 ? 'checked' : ''; ?> /> Yes
-                    </label>
-                </div>
+        <!-- Flash message -->
+        <?php if (!empty($messageSession)) : ?>
+            <div id="flash-message" class="flash-message" role="status" aria-live="polite">
+                <?php echo htmlspecialchars($messageSession); ?>
+                <?php $this->sessionService->unset('message'); ?>
+            </div>
+        <?php endif; ?>
 
-                <div class="form-group">
-                    <label for="content">Page Content:</label>
-                    <textarea name="content" id="content" class="input-text" rows="15"><?php echo htmlspecialchars($selected_page['content']); ?></textarea>
-                </div>
+        <!-- Form -->
+        <form action="edit_page.php?page=<?php echo urlencode($selected_page['id']); ?>" method="post" class="form-subject">
 
-                <div class="form-actions">
-                    <input type="submit" name="submit" value="Edit Page" class="btn btn-primary" />
-                    <a href="delete_page.php?page=<?php echo urlencode($selected_page['id']); ?>" onclick="return confirm('Are you sure?');" class="btn btn-secondary">Delete Page</a>
-                </div>
-            </form>
+            <div class="form-group">
+                <label for="menu_name">Page Name:</label>
+                <input type="text" name="menu_name" id="menu_name" class="input-text"
+                       value="<?php echo htmlspecialchars($selected_page['menu_name']); ?>"
+                       aria-required="true"
+                       aria-describedby="<?php echo !empty($errorSession) ? 'form-errors' : ''; ?>" />
+            </div>
+
+            <div class="form-group">
+                <label for="position">Position:</label>
+                <select name="position" id="position" class="input-select" aria-required="true">
+                    <?php
+                    $page_count = $this->pageModel->countPagesForSubject($selected_page['subject_id']);
+                    for ($count = 1; $count <= $page_count + 1; $count++) {
+                        $selected = ($selected_page['position'] === $count) ? 'selected' : '';
+                        echo "<option value='{$count}' {$selected}>{$count}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <fieldset class="form-group">
+                <legend>Visible</legend>
+                <label class="radio-option">
+                    <input type="radio" name="visible" value="0" <?php echo $selected_page['visible'] === 0 ? 'checked' : ''; ?> /> No
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="visible" value="1" <?php echo $selected_page['visible'] === 1 ? 'checked' : ''; ?> /> Yes
+                </label>
+            </fieldset>
+
+            <div class="form-group">
+                <label for="content">Page Content:</label>
+                <textarea name="content" id="content" class="input-text" rows="15"
+                          aria-required="true"
+                          aria-describedby="<?php echo !empty($errorSession) ? 'form-errors' : ''; ?>"><?php echo htmlspecialchars($selected_page['content']); ?></textarea>
+            </div>
+
+            <div class="form-actions">
+                <input type="submit" name="submit" value="Edit Page" class="btn btn-primary" />
+                <a href="delete_page.php?page=<?php echo urlencode($selected_page['id']); ?>" onclick="return confirm('Are you sure?');" class="btn btn-secondary">Delete Page</a>
+            </div>
 
             <br/>
             <a href="content.php" class="btn btn-secondary">Cancel</a>
-        </td>
-    </tr>
-</table>
+        </form>
+
+    </section>
+</div>

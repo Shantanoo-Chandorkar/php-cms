@@ -151,7 +151,7 @@ class User
         }
     }
 
-    public function createNewUser(string $username, string $hashed_password, string $role)
+    public function createNewUser(string $username, string $hashed_password, string $role): array
     {
         try {
             $existing_user = $this->getUserByUserName($username);
@@ -173,7 +173,10 @@ class User
                     ':role'            => $role,
                 )
             );
-            return $this->db->getConnection()->lastInsertId();
+            return array(
+                'success' => true,
+                'message' => $this->db->getConnection()->lastInsertId()
+            );
         } catch (PDOException $e) {
             die('Error while creating user: ' . $e->getMessage());
         }

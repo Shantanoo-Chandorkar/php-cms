@@ -61,22 +61,28 @@ class PageController
 
     public function handleFormSubmission(int $subjectId): void
     {
+        $menuName = $_POST['menu_name'];
+        $position = $_POST['position'];
+        $visible  = $_POST['visible'];
+        $content  = $_POST['content'];
+
+        $data = array(
+            'menu_name' => $menuName,
+            'position' => $position,
+            'visible' => $visible,
+            'content' => $content,
+        );
         $errors          = [];
         $required_fields = ['menu_name', 'position', 'visible'];
-        $errors          = $this->validationServices->validateRequiredFields($required_fields);
+        $errors          = $this->validationServices->validateRequiredFields($required_fields, $data);
 
         $field_lengths = ['menu_name' => 30];
-        $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
+        $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths, $data));
 
         if (!empty($errors)) {
             $this->sessionService->set('errors', $errors);
             $this->redirectService->redirect('new_page.php?subj=' . urlencode($subjectId));
         }
-
-        $menuName = $_POST['menu_name'];
-        $position = $_POST['position'];
-        $visible  = $_POST['visible'];
-        $content  = $_POST['content'];
 
         $newPageId = $this->pageModel->createNewPage($subjectId, $menuName, $position, $visible, $content);
 
@@ -96,22 +102,28 @@ class PageController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $menuName = $_POST['menu_name'];
+            $position = $_POST['position'];
+            $visible  = $_POST['visible'];
+            $content  = $_POST['content'];
+
+            $data = array(
+                'menu_name' => $menuName,
+                'position' => $position,
+                'visible' => $visible,
+                'content' => $content,
+            );
             $errors          = [];
             $required_fields = ['menu_name', 'position', 'visible'];
-            $errors          = $this->validationServices->validateRequiredFields($required_fields);
+            $errors          = $this->validationServices->validateRequiredFields($required_fields, $data);
 
             $field_lengths   = ['menu_name' => 30];
-            $errors          = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
+            $errors          = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths, $data));
 
             if (!empty($errors)) {
                 $this->sessionService->set('errors', $errors);
                 $this->redirectService->redirect('edit_page.php?page=' . urlencode($pageId));
             }
-
-            $menuName = $_POST['menu_name'];
-            $position = (int) $_POST['position'];
-            $visible  = (bool) $_POST['visible'];
-            $content  = $_POST['content'];
 
             $result = $this->pageModel->updatePageById($pageId, $menuName, $position, $visible, $content);
 
