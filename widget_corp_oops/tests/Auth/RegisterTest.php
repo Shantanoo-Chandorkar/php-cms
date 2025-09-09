@@ -51,6 +51,19 @@ class RegisterTest extends DatabaseTestCase
         $result = $this->controller->handleRegisterUser('', 'Password1!');
 
         $this->assertFalse($result['success']);
-        $this->assertEquals('Username or password cannot be empty.', $result['message']);
+        $this->assertEquals('Please check user name or password again.', $result['message']);
+    }
+
+    /**
+     * Test registration with a long username
+     * Ensures that the method correctly rejects usernames that exceeds 30 characters length
+     * and returns the appropriate error message.
+     */
+    public function testRegisterUserLongUsername()
+    {
+        $result = $this->controller->handleRegisterUser('THisissomethingthatistoolongfortheintendedusername@123', 'Password1!');
+
+        $this->assertFalse($result['success']);
+        $this->assertEquals('Please check user name or password again.', $result['message']);
     }
 }

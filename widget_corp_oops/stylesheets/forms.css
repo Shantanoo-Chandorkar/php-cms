@@ -9,8 +9,8 @@ body {
     line-height: 1.5;
 }
 
-h2,
-h2.title {
+h1,
+h1.title {
     font-size: 1.8rem;
     margin-bottom: 1rem;
     color: #111;

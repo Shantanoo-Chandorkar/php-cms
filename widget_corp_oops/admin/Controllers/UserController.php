@@ -47,26 +47,32 @@ class UserController
 
     private function handleCreateUser(): void
     {
+        $username = trim($_POST['username']);
+        $password = trim($_POST['password']);
+        $role     = $_POST['role'];
+
+        $data = array(
+            'username' => $username,
+            'password' => $password,
+            'role' => $role,
+        );
 
         $errors          = array();
         $required_fields = array( 'username', 'password', 'role' );
-        $errors          = $this->validationServices->validateRequiredFields($required_fields);
+        $errors          = $this->validationServices->validateRequiredFields($required_fields, $data);
 
         $field_lengths = array(
             'username' => 50,
             'password' => 255,
             'role'     => 20,
         );
-        $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
+        $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths, $data));
 
         if (! empty($errors)) {
             $this->sessionService->set('errors', $errors);
             $this->redirectService->redirect('new_user.php');
+            return;
         }
-
-        $username = trim($_POST['username']);
-        $password = trim($_POST['password']);
-        $role     = $_POST['role'];
 
         if (! in_array($role, array( 'admin', 'subscriber' ))) {
             $role = 'subscriber';
@@ -80,6 +86,7 @@ class UserController
         } else {
             $this->sessionService->set('message', 'User already exists.');
             $this->redirectService->redirect('new_user.php');
+            return;
         }
     }
 
@@ -88,12 +95,14 @@ class UserController
         $userId = intval($_GET['user'] ?? 0);
         if ($userId === 0) {
             $this->redirectService->redirect('content.php');
+            return;
         }
 
         $selectedUser = $this->userModel->getUserById($userId);
         if (! $selectedUser) {
             $this->sessionService->set('message', 'User not found.');
             $this->redirectService->redirect('content.php');
+            return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -111,25 +120,32 @@ class UserController
 
     private function handleUpdateUser(int $userId, array $selectedUser): void
     {
+        $username = trim($_POST['username']);
+        $password = trim($_POST['password']);
+        $role     = $_POST['role'];
+
+        $data = array(
+            'username' => $username,
+            'password' => $password,
+            'role' => $role,
+        );
+
         $errors          = array();
         $required_fields = array( 'username', 'password', 'role' );
-        $errors          = $this->validationServices->validateRequiredFields($required_fields);
+        $errors          = $this->validationServices->validateRequiredFields($required_fields, $data);
 
         $field_lengths = array(
             'username' => 50,
             'password' => 255,
             'role'     => 20,
         );
-        $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths));
+        $errors        = array_merge($errors, $this->validationServices->validateMaxLengths($field_lengths, $data));
 
         if (! empty($errors)) {
             $this->sessionService->set('errors', $errors);
             $this->redirectService->redirect('edit_user.php?user=' . urlencode($userId));
+            return;
         }
-
-        $username = trim($_POST['username']);
-        $role     = $_POST['role'];
-        $password = trim($_POST['password']);
 
         if (! in_array($role, array( 'admin', 'subscriber' ))) {
             $role = 'subscriber';
@@ -143,6 +159,7 @@ class UserController
 
         $this->sessionService->set('message', $success ? 'User updated successfully!' : 'No changes were made.');
         $this->redirectService->redirect('staff.php');
+        return;
     }
 
     public function delete(): void
@@ -151,15 +168,19 @@ class UserController
 
         if ($userId === 0) {
             $this->redirectService->redirect('staff.php');
+            return;
         }
 
         $result = $this->userModel->deleteUserById($userId);
 
         if ($result > 0) {
             $this->redirectService->redirect('staff.php');
+            return;
         } else {
             echo '<p>Failed to delete user.</p>';
             echo "<a href='content.php'>Return to the Main Page</a>";
         }
+
+        return;
     }
 }
