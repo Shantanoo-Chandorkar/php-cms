@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Login - Widget Corp</title>
     <link rel="stylesheet" href="/widget_corp/widget_corp_oops/stylesheets/forms.css">

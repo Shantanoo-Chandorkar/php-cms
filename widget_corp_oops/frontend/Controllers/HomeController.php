@@ -13,12 +13,15 @@ class HomeController
     private ?Page $pageModel;
 
     public function __construct(
-        NavigationService $navService = new NavigationService(),
+        ?NavigationService $navService = null,
+        ?Subject $subject = null,
+        ?Page $page = null
     ) {
-        $this->navigationService = $navService;
-        $this->subjectModel = new Subject();
-        $this->pageModel = new Page();
+        $this->navigationService = $navService ?? new NavigationService();
+        $this->subjectModel = $subject ?? new Subject();
+        $this->pageModel = $page ?? new Page();
     }
+
 
     public function index(?int $subjId, ?int $pageId): void
     {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Widget Corp Content</title>
     <link href="<?php echo $baseUrl; ?>stylesheets/<?php echo htmlspecialchars($stylesheetName); ?>.css" 
