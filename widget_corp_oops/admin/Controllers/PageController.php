@@ -53,7 +53,7 @@ class PageController
         $selected_page = $this->subjectService->getSelectedPage();
 
         // Create page model for navigation service
-        echo $this->headerServices->getHeader('edit_subject', $this->sessionService);
+        echo $this->headerServices->getHeader('subject', $this->sessionService);
 
         include_once __DIR__ . '/../Views/templates/new_page.php';
         include_once __DIR__ . '/../Views/partials/footer.php';
@@ -130,7 +130,7 @@ class PageController
         $selected_subject  = $this->subjectService->getSelectedSubject();
         $selected_page     = $this->subjectService->getSelectedPage();
 
-        echo $this->headerServices->getHeader('edit_subject', $this->sessionService);
+        echo $this->headerServices->getHeader('subject', $this->sessionService);
 
         $navigationHtml = $this->navigationServices->renderNavigation(
             $subjects,

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Widget Corp Content</title>
+    <link href="<?php echo $baseUrl; ?>stylesheets/admin.css" rel="stylesheet" media="all" type="text/css" />
     <link href="<?php echo $baseUrl; ?>stylesheets/<?php echo htmlspecialchars($stylesheetName); ?>.css"
         rel="stylesheet" media="all" type="text/css" />
 </head>

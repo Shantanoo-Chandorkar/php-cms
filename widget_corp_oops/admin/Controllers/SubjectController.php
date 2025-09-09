@@ -51,7 +51,7 @@ class SubjectController
         // We need to remove this line after refactoring.
         $pageModel = new Page();
 
-        echo $this->headerService->getHeader('edit_subject', $this->sessionService);
+        echo $this->headerService->getHeader('subject', $this->sessionService);
 
         // View for the new subject forms.
         include_once __DIR__ . '/../Views/templates/new_subject.php';
@@ -134,7 +134,7 @@ class SubjectController
         $pageModel = new Page();
 
         // Render the template
-        echo $this->headerService->getHeader('edit_subject', $this->sessionService);
+        echo $this->headerService->getHeader('subject', $this->sessionService);
 
         $navigationHtml = $this->navigationServices->renderNavigation(
             $subjects,
